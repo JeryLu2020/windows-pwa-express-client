@@ -13,8 +13,8 @@ head
   script(src='/bootstrap/js/bootstrap.bundle.min.js')
 
 
-  //- script(src='/pwabuilder-sw-register.js')
-  //- link(rel='manifest', href='/manifest.json')
+  script(src='/pwabuilder-sw-register.js')
+  link(rel='manifest', href='/manifest.json')
   
 body
   .container-fluid
@@ -27,7 +27,7 @@ body
           li.nav-item
             a.nav-link(href='/') Home
           li.nav-item
-            a.nav-link(href='/users') Users
+            a.nav-link(href='/users') MyProfile
         span
           div
             button.btn.btn-info(type='button', data-toggle='modal', data-target='#registerModal')
