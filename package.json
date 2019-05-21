@@ -1,0 +1,32 @@
+{
+  "name": "express-app2",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node app",
+    "dev": "nodemon app.js"
+  },
+  "description": "ExpressApp2",
+  "author": {
+    "name": ""
+  },
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "connect-mongo": "^2.0.3",
+    "cookie-parser": "^1.4.0",
+    "debug": "^2.2.0",
+    "express": "^4.14.0",
+    "express-session": "^1.16.1",
+    "jade": "^1.11.0",
+    "mongodb": "^3.2.3",
+    "mongoose": "^5.5.6",
+    "morgan": "^1.7.0",
+    "pug": "^2.0.0-beta6",
+    "request": "^2.88.0",
+    "serve-favicon": "^2.3.0",
+    "web-push": "^3.3.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.0"
+  }
+}

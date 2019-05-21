@@ -1,0 +1,82 @@
+﻿{
+  "dir": "ltr",
+  "lang": "en-us",
+  "name": "My Sample PWA",
+  "scope": "/",
+  "display": "standalone",
+  "start_url": "/",
+  "short_name": "SamplePWA",
+  "theme_color": "transparent",
+  "description": "A sample PWA for testing purposes-Jery",
+  "orientation": "any",
+  "background_color": "transparent",
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/images/824fc885-16d4-b22a-4c79-92aa59bde7f1.webPlatform.png",
+      "sizes": "44x44",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/b60302e2-fce7-4a20-f48d-09d8a4a94404.webPlatform.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/389e3803-4b1e-67d1-64cc-6cffdcde53c3.webPlatform.png",
+      "sizes": "1240x600",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/6d73deb8-51ef-1cdf-75d2-b5963bbf1240.webPlatform.png",
+      "sizes": "300x300",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/0c99bae1-c887-6f24-3964-8e5c0d29333b.webPlatform.png",
+      "sizes": "88x88",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/b05988f8-b30a-fffd-72d0-3db72e504999.webPlatform.png",
+      "sizes": "24x24",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/69267677-46ee-dd9f-9895-77d866e91236.webPlatform.png",
+      "sizes": "50x50",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/6012c519-414a-f423-17ad-a23414ddb340.webPlatform.png",
+      "sizes": "620x300",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/2f13a653-d594-2dcb-cbb8-a63e42898582.webPlatform.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/60a5caf1-5f6e-044a-966a-da7ab4d58347.webPlatform.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/f04c6bf1-f0a4-ea9e-fdbd-f21488ee22d3.webPlatform.png",
+      "sizes": "36x36",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/982355a1-2140-2e85-7aa1-fb333de951d5.webPlatform.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/a87b9765-bf6b-0247-0aff-e3114794d011.webPlatform.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
