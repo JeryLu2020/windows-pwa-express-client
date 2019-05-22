@@ -43,10 +43,28 @@ const heroSchema = new Schema({
             required: true,  
         },
         email: String,
+    },{ 
+        timestamps: true,
+    });
+
+
+const heroActivityLogSchema = new Schema({
+    username: String,
+    password: String,
+    loginDateTime : String,
+    loginSuccess  : Boolean,
+    device_ip : String,
+    device_os  : String,
+    loginnumber: {
+        type: Number,
+        default: 0,
     },
-    { timestamps: true }
-);
+ });
 
 //create model
-const Hero = mongoose.model('Hero', heroSchema);
-module.exports = Hero;
+const Hero = mongoose.model('Hero', heroSchema, 'heros');
+const HeroActivityLog = mongoose.model('HeroLogin', heroActivityLogSchema, 'heroactivitylog');
+module.exports = {
+    Hero,
+    HeroActivityLog
+};
