@@ -1,7 +1,7 @@
 ﻿var express = require('express');
 var router = express.Router();
 var webpush = require('web-push');
-const { Hero, HeroActivityLog} = require('../config/database');
+const Hero = require('../config/database');
 
 /* GET home page. */
 router.get('/', function (req, res) {
