@@ -3,10 +3,43 @@ extends layout
 head
 
 block content
-    .container-fluid
-        div
-            h3 #{userprofiler}
-        div
-            br
-            h4 #{activitylogdata}
-
+    .container.fluid
+        .row
+            .col-7.border-right
+                form() 
+                    h3 Your Profile
+                    .form-group.row
+                        label.col-sm-3.col-form-label username:
+                        .col-sm-9
+                            input.form-control-plaintext(type='text', readonly='' value='#{userprofiler.username}')
+                    .form-group.row
+                        label.col-sm-3.col-form-label password:
+                        .col-sm-9
+                            input.form-control-plaintext(type='password', readonly='', value='#{userprofiler.password}')
+                    .form-group.row
+                        label.col-sm-3.col-form-label email:
+                        .col-sm-9
+                            input.form-control-plaintext(type='text', readonly='', value='#{userprofiler.email}')
+                    .form-group.row
+                        label.col-sm-3.col-form-label first_name:
+                        .col-sm-9
+                            input.form-control-plaintext(type='text', readonly='', value='#{userprofiler.first_name}')
+                    .form-group.row
+                        label.col-sm-3.col-form-label middle_name:
+                        .col-sm-9
+                            input.form-control-plaintext(type='text', readonly='', value='#{userprofiler.middle_initial}')
+                    .form-group.row
+                        label.col-sm-3.col-form-label last_name:
+                        .col-sm-9
+                            input.form-control-plaintext(type='text', readonly='', value='#{userprofiler.last_name}')
+                    .form-group.row
+                        label.col-sm-3.col-form-label address:
+                        .col-sm-9
+                            input.form-control-plaintext(type='text', readonly='', value='#{userprofiler.street_address}')
+            .col-5
+                each info in loginactivity
+                    a.list-group-item.list-group-item-action.border-bottom
+                        .d-flex.w-100.justify-content-between
+                            p.mb-1 #{info.loginDateTime}
+                        p.mb-1 #{info.device_ip}
+                        small #{info.device_os}

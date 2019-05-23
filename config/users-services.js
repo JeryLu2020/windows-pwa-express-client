@@ -1,36 +1,21 @@
-const { Hero, HeroActivityLog} = require('./database');
-
-var ActivityLogdata = 'default';
+const Hero = require('./database');
 
 exports.userProfile = (req, res) => {
-    console.log('req.session.activityloguserId'+req.session.activityloguserId);
     if(req.session.userId){
-        HeroActivityLog.findById(req.session.activityloguserId)
-            .then(data=>{
-                if(!data){
-                    return res.render('error', { errmsg: 'no record' });
-                }
-                console.log('find ActivityLogdata success');
-                ActivityLogdata = data.toString();
-            })
-            
         Hero.findById(req.session.userId)
             .then(data=>{
                 if(!data){
                     return res.render('error', { errmsg: 'no record' });
                 }
-                console.log('findOne success222');
-
+                console.log('findOne success11' + data);
+                console.log("data.heroactivitylog" + data.heroactivitylog);
                 return res.render('Users', { 
                     layout: 'layout', 
                     userprofiler : data,
-                    activitylogdata : ActivityLogdata,
+                    loginactivity : data.heroactivitylog,
                 });
             })
             .catch(err=>{
-                if(err.kind === 'ObjectId'){
-                    return res.render('error', { errmsg: err });
-                }
                 return res.render('error', { errmsg: err });
             });
     }
@@ -63,41 +48,12 @@ exports.update = (req, res) => {
         return res.redirect('/users');
     })
     .catch(err=>{
-        if(err.kind === 'ObjectId'){
-            console.log('record not found' + req.params.Id);
-            return res.render('error', { errmsg: err });
-        }
         return res.render('error', { errmsg: err });
     });
 };
 
 
 exports.userregister = (req, res) => {
-    
-    // get infomation
-    var logindatetime = Date().toString();
-    var ip = req.headers['x-forwarded-for'] || req.ip;
-    var os = req.headers['user-agent'];
-    var number = 1;
-    
-    const heroactivitylog = new HeroActivityLog({
-        username: req.body.username,
-        password: req.body.password,
-        loginDateTime : logindatetime,
-        loginSuccess  : true,
-        device_ip : ip,
-        device_os  : os,
-        loginnumber: number,
-    })
-    heroactivitylog.save()
-        .then(data=>{
-            console.log("loginactivity data" + data);
-        })
-        .catch(err=>{
-            return res.render('error', { errmsg: "loginactivity failed to update" + err });
-        })
-
-
     const hero = new Hero({
         first_name: req.body.first_name || 'Unknown name',
         middle_initial: req.body.middle_initial || 'N/A',
@@ -125,26 +81,18 @@ exports.userregister = (req, res) => {
 
 exports.userlogin = (req, res) => {
 
+    // get infomation
+    var logindatetime = Date().toString();
+    var ip = req.headers['x-forwarded-for'] || req.ip;
+    var os = req.headers['user-agent'];
+    var number = 1;
+
     let loginname = req.body.username;
     let loginpassword = req.body.password;
 
     if(loginname=="admin" && loginpassword=="admin"){
         return res.render('error', { errmsg: "Please use another user name" });
     } else {
-        // find activitylog id
-        HeroActivityLog.findOne({ username: loginname, password: loginpassword})
-            .then(data=>{
-                if(!data){
-                    return res.render('error', { errmsg: 'no record' });
-                }
-                req.session.activityloguserId = data._id;
-                console.log("req.session.activityloguserId" + req.session.activityloguserId);
-            })
-            .catch(err=>{
-                if(err.kind === 'ObjectId'){
-                    return res.render('error', { errmsg: err });
-                }
-            });
         // find users id
         Hero.findOne({ username: loginname, password: loginpassword})
             .then(data=>{
@@ -155,12 +103,33 @@ exports.userlogin = (req, res) => {
                 // let userProfiler = JSON.parse(JSON.stringify(data));
                 // console.log("jsonobj:" + userProfiler[0]._id);
                 req.session.userId = data._id;
+
+                // insert the login activitiesy
+                Hero.findOneAndUpdate(data._id, { 
+                    $push: {
+                        heroactivitylog: {
+                            loginDateTime : logindatetime,
+                            loginSuccess  : true,
+                            device_ip : ip,
+                            device_os  : os,
+                            loginnumber: number
+                        }
+                    },
+                }, {new: true})
+                    .then(data => {
+                        if(!data){
+                            return res.render('error', { errmsg: 'no record' });
+                        }
+                        console.log('update success');
+                    })
+                    .catch(err=>{
+                        return res.render('error', { errmsg: err });
+                    });
+
+                // redirect to home page after success login
                 return res.redirect('/');
             })
             .catch(err=>{
-                if(err.kind === 'ObjectId'){
-                    return res.render('error', { errmsg: err });
-                }
                 return res.render('error', { errmsg: err });
             });
     }

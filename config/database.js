@@ -2,6 +2,8 @@
 var mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+mongoose.set('useFindAndModify', false);
+
 //Set up default mongoose connection
 var mongoDBurl = 'mongodb://jerytest:IZ8nYAVROPoQL8kSalbtMwsAhBK8oKft7IdNMm6NFXHrPwinNVmxrGsmURfSD8N5yxFemsMRtIxX5DWG6epJ1A==@jerytest.documents.azure.com:10255/React?ssl=true&replicaSet=globaldb';
 mongoose.connect(mongoDBurl, { useNewUrlParser: true });
@@ -43,28 +45,24 @@ const heroSchema = new Schema({
             required: true,  
         },
         email: String,
+
+        // user login activities
+        heroactivitylog: [{
+            loginDateTime : String,
+            loginSuccess  : Boolean,
+            device_ip : String,
+            device_os  : String,
+            loginnumber: {
+                type: Number,
+                default: 0,
+            },
+        }],
+
     },{ 
         timestamps: true,
     });
 
 
-const heroActivityLogSchema = new Schema({
-    username: String,
-    password: String,
-    loginDateTime : String,
-    loginSuccess  : Boolean,
-    device_ip : String,
-    device_os  : String,
-    loginnumber: {
-        type: Number,
-        default: 0,
-    },
- });
-
 //create model
 const Hero = mongoose.model('Hero', heroSchema, 'heros');
-const HeroActivityLog = mongoose.model('HeroLogin', heroActivityLogSchema, 'heroactivitylog');
-module.exports = {
-    Hero,
-    HeroActivityLog
-};
+module.exports = Hero;
