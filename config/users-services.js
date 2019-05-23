@@ -105,8 +105,8 @@ exports.userlogin = (req, res) => {
                 req.session.userId = data._id;
 
                 // insert the login activitiesy
-                Hero.findOneAndUpdate(data._id, { 
-                    $push: {
+                Hero.findOneAndUpdate(req.session.userId, { 
+                    $addToSet: {
                         heroactivitylog: {
                             loginDateTime : logindatetime,
                             loginSuccess  : true,
