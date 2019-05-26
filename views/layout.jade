@@ -12,13 +12,12 @@ head
   script(src='/bootstrap/js/popper.min.js')
   script(src='/bootstrap/js/bootstrap.bundle.min.js')
 
-
   script(src='/pwabuilder-sw-register.js')
   link(rel='manifest', href='/manifest.json')
   
 body
   .container-fluid
-    nav.navbar.navbar-expand-lg.navbar-light.bg-light
+    nav.navbar.navbar-expand-lg.navbar-light.bg-light.shadow
       a.navbar-brand Express Sample App
       button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarText', aria-controls='navbarText', aria-expanded='false', aria-label='Toggle navigation')
         span.navbar-toggler-icon
@@ -28,66 +27,11 @@ body
             a.nav-link(href='/') Home
           li.nav-item
             a.nav-link(href='/users') MyProfile
+        //- span
+        //-   | hello 
         span
-          div
-            button.btn.btn-info(type='button', data-toggle='modal', data-target='#registerModal')
-              | Register
-            #registerModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='registerModalLabel', aria-hidden='true')
-              .modal-dialog.modal-dialog-centered(role='document')
-                .modal-content
-                  .modal-header
-                    h3#registerModalLabel.modal-title Register
-                  .modal-body
-                    form(action='/users/register', method='POST', id='register-record')
-                      .form-group.row
-                          label.col-sm-3.col-form-label username:
-                          .col-sm-9
-                              input#validationServer01.form-control(type='text', name='username', placeholder='', onblur="checkName(this.value)")
-                              #feedback.valid-feedback ok to use.
-                      .form-group.row
-                          label.col-sm-3.col-form-label password:
-                          .col-sm-9
-                              input#validationServerUsername.form-control.is-invalid(type='password', name='password', placeholder='password')
-                              .invalid-feedback Pass word doesn't match.
-                      .form-group.row
-                          label.col-sm-3.col-form-label email:
-                          .col-sm-9
-                              input.form-control(type='text', name='email', placeholder='')
-                      .form-group.row
-                          label.col-sm-3.col-form-label first_name:
-                          .col-sm-9
-                              input.form-control(type='text', name='first_name', placeholder='')
-                      .form-group.row
-                          label.col-sm-3.col-form-label middle_initial:
-                          .col-sm-9
-                              input.form-control(type='text', name='middle_initial', placeholder='')
-                      .form-group.row
-                          label.col-sm-3.col-form-label last_name:
-                          .col-sm-9
-                              input.form-control(type='text', name='last_name', placeholder='')
-                      .form-group.row
-                          label.col-sm-3.col-form-label address:
-                          .col-sm-9
-                              input.form-control(type='text', name='street_address', placeholder='')
-                      .form-group.row
-                          label.col-sm-3.col-form-label birthday:
-                          .col-sm-9
-                              input.form-control(type='date', name='day_of_birth', placeholder='')
-                      .form-group.row
-                          label.col-sm-3.col-form-label state:
-                          .col-sm-9
-                              select.custom-select.mr-sm-3(name='state_name')
-                                  option(selected='Alabama') Alabama
-                                  option(value='California') California
-                                  option(value='Texas') Texas
-                                  option(value='New York') New York
-                                  option(value='Arizona') Arizona
-                                  option(value='Georgia') Georgia
-                  .modal-footer
-                    button.btn.btn-secondary(type='button', data-dismiss='modal') Cancle
-                    button.btn.btn-primary(type='button', onclick="document.getElementById('register-record').submit();") Register
-            
-            button.btn.btn-dark(type='button', data-toggle='modal', data-target='#loginModal')
+          .btn-toolbar
+            button.btn.btn-dark.btn-group(type='button', data-toggle='modal', data-target='#loginModal')
               | Login
             #loginModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='loginModalLabel', aria-hidden='true')
               .modal-dialog.modal-dialog-centered(role='document')
@@ -104,38 +48,122 @@ body
                           label.col-sm-3.col-form-label password:
                           .col-sm-9
                               input.form-control(type='password', name='password')
-                      //- .form-group.row
-                      //-     label.col-sm-3.col-form-label email:
-                      //-     .col-sm-9
-                      //-         input.form-control(type='text', name='email', placeholder='not finished yet.....')
                   .modal-footer
                     button.btn.btn-secondary(type='button', data-dismiss='modal') Cancle
                     button.btn.btn-primary(type='button', onclick="document.getElementById('login-record').submit();") Login
             form(action="/users/logout", method="GET")
-                button.btn.btn-primary.btn-sm(type="submit") LogOut
+                button.btn.btn-primary.btn-group(type="submit") LogOut
+
+            button.btn.btn-info.btn-group(type='button', data-toggle='modal', data-target='#registerModal')
+              | Register
+            #registerModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='registerModalLabel', aria-hidden='true')
+              .modal-dialog.modal-dialog-centered(role='document')
+                .modal-content
+                  .modal-header
+                    h3#registerModalLabel.modal-title Register
+                  .modal-body
+                    form(action='/users/register', method='POST', id='register-record')
+                      .form-group.row
+                          label.col-sm-4.col-form-label Username:
+                          .col-sm-8
+                              input#validatename.form-control(type='text', name='username', placeholder='', onblur="checkName(this.value)")
+                              #feedbackname
+                      .form-group.row
+                          label.col-sm-4.col-form-label Password:
+                          .col-sm-8
+                              input#originpassword.form-control(type='password', name='password', placeholder='password')
+                      .form-group.row
+                          label.col-sm-4.col-form-label Confirm Password:
+                          .col-sm-8
+                              input#validatepassword.form-control(type='password', name='', placeholder='confirm password', onblur="checkPassword(this.value)")
+                              #feedbackvalidate
+                      .form-group.row
+                          label.col-sm-4.col-form-label Email:
+                          .col-sm-8
+                              input.form-control(type='text', name='email', placeholder='sample@sample.com')
+                      .form-group.row
+                          .col-md-4.mb-3
+                            label.col-form-label First_name:
+                              input.form-control(type='text', name='first_name', placeholder='')
+                          .col-md-4.mb-3
+                            label.col-form-label Middle_initial:
+                              input.form-control(type='text', name='middle_initial', placeholder='')
+                          .col-md-4.mb-3
+                            label.col-form-label Last_name:
+                              input.form-control(type='text', name='last_name', placeholder='')
+                      .form-group.row
+                          label.col-sm-4.col-form-label Birthday:
+                          .col-sm-8
+                              input.form-control(type='date', name='day_of_birth', placeholder='')
+                      .form-group.row
+                          .col-md-4.mb-3
+                              label.col-sm-4.col-form-label Country:
+                              select.custom-select.mr-sm-3(name='country_name')
+                                  option(selected='United States') United States
+                                  option(value='China') China
+                          .col-md-4.mb-3
+                              label.col-sm-4.col-form-label State:
+                              select.custom-select.mr-sm-3(name='state_name')
+                                  option(selected='Alabama') Alabama
+                                  option(value='California') California
+                                  option(value='Texas') Texas
+                                  option(value='New York') New York
+                                  option(value='Arizona') Arizona
+                                  option(value='Georgia') Georgia
+                          .col-md-4.mb-3
+                              label.col-sm-4.col-form-label City:
+                              select.custom-select.mr-sm-3(name='city_name')
+                                  option(selected='Birmingham') Birmingham
+                                  option(value='Montgomery') Montgomery
+                      .form-group.row
+                          label.col-sm-4.col-form-label Address:
+                          .col-sm-8
+                              input.form-control(type='text', name='street_address', placeholder='')
+                  .modal-footer
+                    button.btn.btn-secondary(type='button', data-dismiss='modal') Cancle
+                    button.btn.btn-primary(type='button', onclick="document.getElementById('register-record').submit();") Register
+            
   .container-fluid
     block content
     
 
   script.
     function checkName(val) {
-      var userText = document.getElementById('#feesback');
       if(!(val.match(/^\S+$/))) {
         console.log("username is required");
       } else {
-        console.log(val);
-        $.ajax({
-          url: "/users/checkname",
-          type: "POST",
-          data: JSON.stringify(val),
-          contentType:'application/json',
-          dataType: "json",
-          success: function() {
-              console.log("success!")
-          },
-          error: function() {
-              console.log("error")
+        $.post('/users/checkname', { username: val}, 
+        function(data){
+          if(data=='ok'){
+            $("#validatename").removeClass("is-invalid");
+            $("#validatename").addClass("is-valid");
+            $("#feedbackname").removeClass("invalid-feedback");
+            $("#feedbackname").addClass("valid-feedback");
+            $("#feedbackname").html("username is valid");
+          } else if( data=='no'){
+            $("#validatename").removeClass("is-valid");
+            $("#validatename").addClass("is-invalid");
+            $("#feedbackname").removeClass("valid-feedback");
+            $("#feedbackname").addClass("invalid-feedback");
+            $("#feedbackname").html("username already exist");
           }
-        });
+        })
+      }
+    }
+
+    function checkPassword(val) {
+      var password = $("#originpassword").val();
+      if( password == val){
+        $("#validatepassword").removeClass("is-invalid");
+        $("#validatepassword").addClass("is-valid");
+        $("#feedbackvalidate").removeClass("invalid-feedback");
+        $("#feedbackvalidate").addClass("valid-feedback");
+        $("#feedbackvalidate").html("passowrd is valid");
+      } else {
+        $("#validatepassword").removeClass("is-valid");
+        $("#validatepassword").addClass("is-invalid");
+        $("#feedbackvalidate").removeClass("valid-feedback");
+        $("#feedbackvalidate").addClass("invalid-feedback");
+        $("#feedbackvalidate").html("passowrd doesn't match!!");
       }
     }

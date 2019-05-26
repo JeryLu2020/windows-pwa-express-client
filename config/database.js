@@ -27,9 +27,11 @@ const heroSchema = new Schema({
         middle_initial: String,
         last_name: String,
         street_address: String,
-        city_name: String,
-        state_name: String,
+
         country_name: String,
+        state_name: String,
+        city_name: String,
+        
         day_of_birth: Date,
         driver_license_number: String,
         driver_license_state: String,

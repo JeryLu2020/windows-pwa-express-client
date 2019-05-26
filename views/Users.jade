@@ -4,10 +4,11 @@ head
 
 block content
     .container.fluid
-        .row
-            .col-7.border-right
+        br 
+        h3 Your Profile
+        .row.border-top
+            .col
                 form() 
-                    h3 Your Profile
                     .form-group.row
                         label.col-sm-3.col-form-label username:
                         .col-sm-9
@@ -32,14 +33,28 @@ block content
                         label.col-sm-3.col-form-label last_name:
                         .col-sm-9
                             input.form-control-plaintext(type='text', readonly='', value='#{userprofiler.last_name}')
+            .col
+                form() 
                     .form-group.row
-                        label.col-sm-3.col-form-label address:
+                        label.col-sm-3.col-form-label country:
                         .col-sm-9
-                            input.form-control-plaintext(type='text', readonly='', value='#{userprofiler.street_address}')
-            .col-5
-                each info in loginactivity
-                    a.list-group-item.list-group-item-action.border-bottom
-                        .d-flex.w-100.justify-content-between
-                            p.mb-1 #{info.loginDateTime}
-                        p.mb-1 #{info.device_ip} #{info._id}
-                        small #{info.device_os}
+                            input.form-control-plaintext(type='text', readonly='', value='#{userprofiler.country_name}')
+                    .form-group.row
+                        label.col-sm-3.col-form-label state:
+                        .col-sm-9
+                            input.form-control-plaintext(type='text', readonly='', value='#{userprofiler.state_name}')
+                    .form-group.row
+                        label.col-sm-3.col-form-label city:
+                        .col-sm-9
+                            input.form-control-plaintext(type='text', readonly='', value='#{userprofiler.city_name}')
+
+        h5 Login Activities
+        each info in loginactivity
+            .row.border-top
+                .col-3
+                    h6.badge.badge-pill.badge-success login
+                    p.small.mb-1 #{info.loginDateTime}
+                .col-1
+                    p.small.mb-1 #{info.device_ip}
+                .col-8
+                    small #{info.device_os}

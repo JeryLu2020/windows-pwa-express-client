@@ -31,7 +31,11 @@ exports.update = (req, res) => {
         middle_initial: req.body.middle_initial || 'N/A',
         last_name: req.body.last_name || 'N/A',
         street_address: req.body.street_address || 'N/A',
+
+        country_name: req.body.country_name || 'N/A',
+        state_name: req.body.state_name || 'N/A',
         city_name: req.body.city_name || 'N/A',
+
         payment_card: req.body.payment_card || 'N/A',
         day_of_birth: req.body.day_of_birth || '',
         
@@ -59,9 +63,12 @@ exports.userregister = (req, res) => {
         middle_initial: req.body.middle_initial || 'N/A',
         last_name: req.body.last_name || 'N/A',
         street_address: req.body.street_address || 'N/A',
-        city_name: req.body.city_name || 'N/A',
-        payment_card: req.body.payment_card || 'N/A',
+
+        country_name: req.body.country_name || 'N/A',
         state_name: req.body.state_name || 'N/A',
+        city_name: req.body.city_name || 'N/A',
+
+        payment_card: req.body.payment_card || 'N/A',
         day_of_birth: req.body.day_of_birth || '',
         
         username: req.body.username || 'Undefined',
@@ -104,27 +111,7 @@ exports.userlogin = (req, res) => {
                 // console.log("jsonobj:" + userProfiler[0]._id);
                 req.session.userId = data._id;
 
-                // insert the login activitiesy
-                Hero.findOneAndUpdate(req.session.userId, { 
-                    $addToSet: {
-                        heroactivitylog: {
-                            loginDateTime : logindatetime,
-                            loginSuccess  : true,
-                            device_ip : ip,
-                            device_os  : os,
-                            loginnumber: number++
-                        }
-                    },
-                }, {new: true})
-                    .then(data => {
-                        if(!data){
-                            return res.render('error', { errmsg: 'no record' });
-                        }
-                        console.log('update success');
-                    })
-                    .catch(err=>{
-                        return res.render('error', { errmsg: err });
-                    });
+                updateactivity(data._id, logindatetime, ip, os, number);
 
                 // redirect to home page after success login
                 return res.redirect('/');
@@ -134,6 +121,32 @@ exports.userlogin = (req, res) => {
             });
     }
 }
+
+function updateactivity (mongoid, logindatetime, ip, os, number) {
+    // insert the login activitiesy
+    Hero.updateOne( { _id : mongoid }, { 
+        $addToSet: {
+            heroactivitylog:
+                { 
+                    loginDateTime : logindatetime,
+                    loginSuccess  : true,
+                    device_ip : ip,
+                    device_os  : os,
+                    loginnumber: number++,
+                }
+        },
+    }, {new: true})
+        .then(data => {
+            if(!data){
+                console.log('updateactivity failed');
+            }
+            console.log('updateactivity success');
+        })
+        .catch(err=>{
+            console.log('updateactivity failure' + err);
+        });
+}
+
 
 exports.userlogout = (req, res) => {
     if (req.session) {
@@ -158,9 +171,9 @@ exports.checkName = (req, res) => {
     Hero.findOne({ username: req.body.username})
         .then(data=>{
             if(!data){
-                return res.render('layout', { checkname : "username is valid"});
+                return res.send("ok");
             }
-            return res.render('layout', { checkname : "username already exist"});
+            return res.send("no");
         })
         .catch(err=>{
             return res.render('error', { errmsg: err });
