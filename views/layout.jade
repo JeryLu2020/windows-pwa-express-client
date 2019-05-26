@@ -5,7 +5,7 @@ head
   link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
   link(rel='stylesheet', href='/bootstrap/css/dataTables.bootstrap4.min.css')
   script(src='/bootstrap/js/jquery-3.4.1.js')
-  script(src='/bootstrap/js/jquery-3.3.1.slim.min.js')
+  script(src='/bootstrap/js/jquery-3.4.1.min.js')
   script(src='/bootstrap/js/bootstrap.min.js')
   script(src='/bootstrap/js/jquery.dataTables.min.js')
   script(src='/bootstrap/js/dataTables.bootstrap4.min.js')
@@ -42,11 +42,13 @@ body
                       .form-group.row
                           label.col-sm-3.col-form-label username:
                           .col-sm-9
-                              input.form-control(type='text', name='username', placeholder='')
+                              input#validationServer01.form-control(type='text', name='username', placeholder='', onblur="checkName(this.value)")
+                              #feedback.valid-feedback ok to use.
                       .form-group.row
                           label.col-sm-3.col-form-label password:
                           .col-sm-9
-                              input.form-control(type='password', name='password', placeholder='password')
+                              input#validationServerUsername.form-control.is-invalid(type='password', name='password', placeholder='password')
+                              .invalid-feedback Pass word doesn't match.
                       .form-group.row
                           label.col-sm-3.col-form-label email:
                           .col-sm-9
@@ -115,3 +117,25 @@ body
     block content
     
 
+  script.
+    function checkName(val) {
+      var userText = document.getElementById('#feesback');
+      if(!(val.match(/^\S+$/))) {
+        console.log("username is required");
+      } else {
+        console.log(val);
+        $.ajax({
+          url: "/users/checkname",
+          type: "POST",
+          data: JSON.stringify(val),
+          contentType:'application/json',
+          dataType: "json",
+          success: function() {
+              console.log("success!")
+          },
+          error: function() {
+              console.log("error")
+          }
+        });
+      }
+    }

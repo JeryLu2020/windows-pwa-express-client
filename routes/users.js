@@ -17,4 +17,7 @@ router.post('/login', userServices.userlogin);
 // logout
 router.get('/logout', userServices.userlogout);
 
+//check if username already exist
+router.post('/checkname', userServices.checkName);
+
 module.exports = router;

@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 
 //Set up default mongoose connection
 var mongoDBurl = 'mongodb://jerytest:IZ8nYAVROPoQL8kSalbtMwsAhBK8oKft7IdNMm6NFXHrPwinNVmxrGsmURfSD8N5yxFemsMRtIxX5DWG6epJ1A==@jerytest.documents.azure.com:10255/React?ssl=true&replicaSet=globaldb';
@@ -38,7 +39,7 @@ const heroSchema = new Schema({
 
         username: {
             type: String,
-            required: true,  
+            required: true,
         },
         password: {
             type: String,

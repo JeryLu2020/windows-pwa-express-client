@@ -83,7 +83,7 @@ exports.userlogin = (req, res) => {
 
     // get infomation
     var logindatetime = Date().toString();
-    var ip = req.headers['x-forwarded-for'] || req.ip;
+    var ip = req.headers['x-forwarded-for'] || req.ip; // x-forward-for is for proxy
     var os = req.headers['user-agent'];
     var number = 1;
 
@@ -91,7 +91,7 @@ exports.userlogin = (req, res) => {
     let loginpassword = req.body.password;
 
     if(loginname=="admin" && loginpassword=="admin"){
-        return res.render('error', { errmsg: "Please use another user name" });
+        return res.render('error', { errmsg: "You are not allowed to login as admin" });
     } else {
         // find users id
         Hero.findOne({ username: loginname, password: loginpassword})
@@ -112,7 +112,7 @@ exports.userlogin = (req, res) => {
                             loginSuccess  : true,
                             device_ip : ip,
                             device_os  : os,
-                            loginnumber: number
+                            loginnumber: number++
                         }
                     },
                 }, {new: true})
@@ -150,3 +150,20 @@ exports.userlogout = (req, res) => {
         return res.redirect('/');
     }
 };
+
+
+
+exports.checkName = (req, res) => {
+
+    Hero.findOne({ username: req.body.username})
+        .then(data=>{
+            if(!data){
+                return res.render('layout', { checkname : "username is valid"});
+            }
+            return res.render('layout', { checkname : "username already exist"});
+        })
+        .catch(err=>{
+            return res.render('error', { errmsg: err });
+        });
+
+}
