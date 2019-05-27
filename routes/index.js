@@ -68,33 +68,4 @@ router.post('/sendNotification', function (req, res) {
         });
 });
 
-//post to function app
-// var functionurl = "https://func-js-2019.azurewebsites.net/api/HttpTrigger1?code=9/vTMgu8UsOw4Daq/fGpKOV2nPLp1y8RTLyg72OohIYR55YCJK4Twg==";
-// router.post('/postfunction', function (req, res) {
-//     request({
-//         url: functionurl,
-//         method: "POST",
-//         json: true,
-//         headers: {
-//             "content-type": "application/json",
-//         },
-//         body: {
-//             name: "azure, this is from my PWA app"
-//         }
-//     }, function(error, response, body) {
-//         if (!error && response.statusCode == 200) {
-//             console.log("success");
-//             res.send(response.body);
-//         } else if(error){
-//             console.log("error: " + error);
-//             res.send("failed to call function app" + error);
-//         }
-//     }); 
-// });
-
-
-
-
-
-
 module.exports = router;

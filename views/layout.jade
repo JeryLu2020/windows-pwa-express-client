@@ -17,11 +17,11 @@ head
   
 body
   .container-fluid.pr-0.pl-0
-    nav.navbar.navbar-expand-lg.navbar-light.bg-light.shadow.px-2
-      a.navbar-brand Express Sample App
+    nav.navbar.navbar-expand-lg.navbar-light.bg-light.shadow
+      a.navbar-brand.pl-5 Express Sample App
       button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarText', aria-controls='navbarText', aria-expanded='false', aria-label='Toggle navigation')
         span.navbar-toggler-icon
-      #navbarText.collapse.navbar-collapse
+      #navbarText.collapse.navbar-collapse.pr-5
         ul.navbar-nav.mr-auto
           li.nav-item
             a.nav-link(href='/') Home
@@ -80,7 +80,8 @@ body
                       .form-group.row
                           label.col-sm-4.col-form-label Email:
                           .col-sm-8
-                              input.form-control(type='text', name='email', placeholder='sample@sample.com')
+                              input#emailvalidate.form-control(type='text', name='email', placeholder='sample@sample.com', onblur="checkEmail(this.value)")
+                              #feedbackemail
                       .form-group.row
                           .col-md-4.mb-3
                             label.col-form-label First_name:
@@ -166,4 +167,28 @@ body
         $("#feedbackvalidate").addClass("invalid-feedback");
         $("#feedbackvalidate").html("passowrd doesn't match!!");
       }
+    }
+
+    function checkEmail(val) {
+      var email = $('#emailvalidate').val();
+      if(email != null){
+        if(isEmail(email)){
+          $("#emailvalidate").removeClass("is-invalid");
+          $("#emailvalidate").addClass("is-valid");
+          $("#feedbackemail").removeClass("invalid-feedback");
+          $("#feedbackemail").addClass("valid-feedback");
+          $("#feedbackemail").html("email is valid");
+        } else {
+          $("#emailvalidate").removeClass("is-valid");
+          $("#emailvalidate").addClass("is-invalid");
+          $("#feedbackemail").removeClass("ivalid-feedback");
+          $("#feedbackemail").addClass("invalid-feedback");
+          $("#feedbackemail").html("invalid email format");
+        }
+      }
+    }
+
+    function isEmail(email) {
+      var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+      return regex.test(email);
     }
