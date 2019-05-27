@@ -16,8 +16,8 @@ head
   link(rel='manifest', href='/manifest.json')
   
 body
-  .container-fluid
-    nav.navbar.navbar-expand-lg.navbar-light.bg-light.shadow
+  .container-fluid.pr-0.pl-0
+    nav.navbar.navbar-expand-lg.navbar-light.bg-light.shadow.px-2
       a.navbar-brand Express Sample App
       button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarText', aria-controls='navbarText', aria-expanded='false', aria-label='Toggle navigation')
         span.navbar-toggler-icon
@@ -31,7 +31,7 @@ body
         //-   | hello 
         span
           .btn-toolbar
-            button.btn.btn-dark.btn-group(type='button', data-toggle='modal', data-target='#loginModal')
+            button.btn.btn-outline-dark.btn-group(type='button', data-toggle='modal', data-target='#loginModal')
               | Login
             #loginModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='loginModalLabel', aria-hidden='true')
               .modal-dialog.modal-dialog-centered(role='document')
@@ -52,9 +52,9 @@ body
                     button.btn.btn-secondary(type='button', data-dismiss='modal') Cancle
                     button.btn.btn-primary(type='button', onclick="document.getElementById('login-record').submit();") Login
             form(action="/users/logout", method="GET")
-                button.btn.btn-primary.btn-group(type="submit") LogOut
+                button.btn.btn-outline-primary.btn-group(type="submit") LogOut
 
-            button.btn.btn-info.btn-group(type='button', data-toggle='modal', data-target='#registerModal')
+            button.btn.btn-outline-info.btn-group(type='button', data-toggle='modal', data-target='#registerModal')
               | Register
             #registerModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='registerModalLabel', aria-hidden='true')
               .modal-dialog.modal-dialog-centered(role='document')
