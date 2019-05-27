@@ -90,7 +90,8 @@ exports.userlogin = (req, res) => {
 
     // get infomation
     var logindatetime = Date().toString();
-    var ip = req.headers['x-forwarded-for'] || req.ip; // x-forward-for is for proxy
+    var wholeip = req.headers['x-forwarded-for'] || req.ip; // x-forward-for is for proxy
+    var ip = wholeip.split(":")[0];
     var os = req.headers['user-agent'];
     var number = 1;
 
