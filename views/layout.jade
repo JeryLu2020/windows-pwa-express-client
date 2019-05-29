@@ -72,6 +72,10 @@ body
                           label.col-sm-4.col-form-label Password:
                           .col-sm-8
                               input#originpassword.form-control(type='password', name='password', placeholder='password')
+                              #passwordnumber
+                              #passwordlength
+                              #passwordlower
+                              #passwordupper
                       .form-group.row
                           label.col-sm-4.col-form-label Confirm Password:
                           .col-sm-8
@@ -92,10 +96,6 @@ body
                           .col-md-4.mb-3
                             label.col-form-label Last_name:
                               input.form-control(type='text', name='last_name', placeholder='')
-                      .form-group.row
-                          label.col-sm-4.col-form-label Birthday:
-                          .col-sm-8
-                              input.form-control(type='date', name='day_of_birth', placeholder='')
                       .form-group.row
                           .col-md-4.mb-3
                               label.col-sm-4.col-form-label Country:
@@ -136,16 +136,12 @@ body
         $.post('/users/checkname', { username: val}, 
         function(data){
           if(data=='ok'){
-            $("#validatename").removeClass("is-invalid");
-            $("#validatename").addClass("is-valid");
-            $("#feedbackname").removeClass("invalid-feedback");
-            $("#feedbackname").addClass("valid-feedback");
+            $("#validatename").removeClass("is-invalid").addClass("is-valid");
+            $("#feedbackname").removeClass("invalid-feedback").addClass("valid-feedback");
             $("#feedbackname").html("username is valid");
           } else if( data=='no'){
-            $("#validatename").removeClass("is-valid");
-            $("#validatename").addClass("is-invalid");
-            $("#feedbackname").removeClass("valid-feedback");
-            $("#feedbackname").addClass("invalid-feedback");
+            $("#validatename").removeClass("is-valid").addClass("is-invalid");
+            $("#feedbackname").removeClass("valid-feedback").addClass("invalid-feedback");
             $("#feedbackname").html("username already exist");
           }
         })
@@ -155,16 +151,12 @@ body
     function checkPassword(val) {
       var password = $("#originpassword").val();
       if( password == val){
-        $("#validatepassword").removeClass("is-invalid");
-        $("#validatepassword").addClass("is-valid");
-        $("#feedbackvalidate").removeClass("invalid-feedback");
-        $("#feedbackvalidate").addClass("valid-feedback");
+        $("#validatepassword").removeClass("is-invalid").addClass("is-valid");
+        $("#feedbackvalidate").removeClass("invalid-feedback").addClass("valid-feedback");
         $("#feedbackvalidate").html("passowrd is valid");
       } else {
-        $("#validatepassword").removeClass("is-valid");
-        $("#validatepassword").addClass("is-invalid");
-        $("#feedbackvalidate").removeClass("valid-feedback");
-        $("#feedbackvalidate").addClass("invalid-feedback");
+        $("#validatepassword").removeClass("is-valid").addClass("is-invalid");
+        $("#feedbackvalidate").removeClass("valid-feedback").addClass("invalid-feedback");
         $("#feedbackvalidate").html("passowrd doesn't match!!");
       }
     }
@@ -173,16 +165,12 @@ body
       var email = $('#emailvalidate').val();
       if(email != null){
         if(isEmail(email)){
-          $("#emailvalidate").removeClass("is-invalid");
-          $("#emailvalidate").addClass("is-valid");
-          $("#feedbackemail").removeClass("invalid-feedback");
-          $("#feedbackemail").addClass("valid-feedback");
+          $("#emailvalidate").removeClass("is-invalid").addClass("is-valid");
+          $("#feedbackemail").removeClass("invalid-feedback").addClass("valid-feedback");
           $("#feedbackemail").html("email is valid");
         } else {
-          $("#emailvalidate").removeClass("is-valid");
-          $("#emailvalidate").addClass("is-invalid");
-          $("#feedbackemail").removeClass("ivalid-feedback");
-          $("#feedbackemail").addClass("invalid-feedback");
+          $("#emailvalidate").removeClass("is-valid").addClass("is-invalid");
+          $("#feedbackemail").removeClass("ivalid-feedback").addClass("invalid-feedback");
           $("#feedbackemail").html("invalid email format");
         }
       }
@@ -191,4 +179,40 @@ body
     function isEmail(email) {
       var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
       return regex.test(email);
+    }
+  
+    // password strengthen
+    $('#originpassword').popover({'trigger':'focus', 'title': 'Password strengthen'});
+    // When the user starts to type something inside the password field
+    $('#originpassword').onkeyup = function() {
+      // is-validate lowercase letters
+      var lowerCaseLetters = /[a-z]/g;
+      if(myInput.value.match(lowerCaseLetters)) {  
+
+      } else {
+        
+      }
+      
+      // is-validate capital letters
+      var upperCaseLetters = /[A-Z]/g;
+      if(myInput.value.match(upperCaseLetters)) {  
+       
+      } else {
+
+      }
+
+      // is-validate numbers
+      var numbers = /[0-9]/g;
+      if(myInput.value.match(numbers)) {  
+        
+      } else {
+
+      }
+      
+      // is-validate length
+      if(myInput.value.length >= 8) {
+        
+      } else {
+        
+      }
     }
