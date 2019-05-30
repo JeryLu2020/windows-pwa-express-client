@@ -72,10 +72,10 @@ body
                           label.col-sm-4.col-form-label Password:
                           .col-sm-8
                               input#originpassword.form-control(type='password', name='password', placeholder='password')
-                              #passwordnumber
-                              #passwordlength
-                              #passwordlower
-                              #passwordupper
+                              #passwordlength.d-none.invalid-feedback At least 8 characters
+                              #passwordnumber.d-none.invalid-feedback At least one number
+                              #passwordlower.d-none.invalid-feedback At least one letter
+                              #passwordupper.d-none.invalid-feedback At least one capital letter
                       .form-group.row
                           label.col-sm-4.col-form-label Confirm Password:
                           .col-sm-8
@@ -180,39 +180,55 @@ body
       var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
       return regex.test(email);
     }
-  
-    // password strengthen
-    $('#originpassword').popover({'trigger':'focus', 'title': 'Password strengthen'});
-    // When the user starts to type something inside the password field
-    $('#originpassword').onkeyup = function() {
-      // is-validate lowercase letters
-      var lowerCaseLetters = /[a-z]/g;
-      if(myInput.value.match(lowerCaseLetters)) {  
 
-      } else {
-        
-      }
-      
-      // is-validate capital letters
-      var upperCaseLetters = /[A-Z]/g;
-      if(myInput.value.match(upperCaseLetters)) {  
-       
-      } else {
+    $(document).ready(function() {
+      $('#originpassword').keyup(function() {
+        var val = $('#originpassword').val();
+        // is-validate length
+        if(val.length >= 8) {
+          $('#passwordlength').removeClass('invalid-feedback').addClass('valid-feedback');
+        } else {
+          $('#passwordlength').removeClass('valid-feedback').addClass('invalid-feedback');     
+        }
 
-      }
+        // is-validate numbers
+        var numbers = /[0-9]/g;
+        if(val.match(numbers)) {  
+          $('#passwordnumber').removeClass('invalid-feedback').addClass('valid-feedback');
+        } else {
+          $('#passwordnumber').removeClass('valid-feedback').addClass('invalid-feedback');
+        }
 
-      // is-validate numbers
-      var numbers = /[0-9]/g;
-      if(myInput.value.match(numbers)) {  
+        // is-validate lowercase letters
+        var lowerCaseLetters = /[a-z]/g;
+        if(val.match(lowerCaseLetters)) {  
+          $('#passwordlower').removeClass('invalid-feedback').addClass('valid-feedback');
+        } else {
+          $('#passwordlower').removeClass('valid-feedback').addClass('invalid-feedback');
+        }
         
-      } else {
+        // is-validate capital letters
+        var upperCaseLetters = /[A-Z]/g;
+        if(val.match(upperCaseLetters)) {  
+          $('#passwordupper').removeClass('invalid-feedback').addClass('valid-feedback');
+        } else {
+          $('#passwordupper').removeClass('valid-feedback').addClass('invalid-feedback');
+        }
 
-      }
-      
-      // is-validate length
-      if(myInput.value.length >= 8) {
-        
-      } else {
-        
-      }
-    }
+        if(val.length >= 8 && val.match(numbers) && val.match(lowerCaseLetters) && val.match(upperCaseLetters)){
+          $('#originpassword').removeClass("is-invalid").addClass("is-valid");
+        } else {
+          $('#originpassword').removeClass("is-valid").addClass("is-invalid");
+        }
+      }).focus(function() {
+        $('#passwordlength').removeClass('d-none').addClass('d-block');
+        $('#passwordnumber').removeClass('d-none').addClass('d-block');
+        $('#passwordlower').removeClass('d-none').addClass('d-block');
+        $('#passwordupper').removeClass('d-none').addClass('d-block');
+      }).blur(function() {
+        $('#passwordlength').removeClass('d-block').addClass('d-none');
+        $('#passwordnumber').removeClass('d-block').addClass('d-none');
+        $('#passwordlower').removeClass('d-block').addClass('d-none');
+        $('#passwordupper').removeClass('d-block').addClass('d-none');
+      })
+    })
