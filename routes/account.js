@@ -11,6 +11,10 @@ router.get('/create', (req,res)=>{
     res.render('account-create');
 });
 
+router.get('/create/email', (req,res)=>{
+    res.render('account-email');
+});
+
 
 
 

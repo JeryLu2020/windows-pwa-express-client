@@ -5,50 +5,41 @@ head
 block content
     .container
         .row.d-flex.justify-content-center
-            .jumbotron.text-center.bg-white.shadow.rounded.mt-5(style="width:30%; height: 80%")
+            .jumbotron.text-center.bg-white.shadow.rounded.mt-5(style="width:35%; height: 80%")
                 h5.mt-3 Sing up
                 form(action='/users/register', method='POST', id='register-record')
-                    .form-group.row
-                        label.col-sm-4.col-form-label Username:
-                        .col-sm-8
-                            input#validatename.form-control(type='text', name='username', placeholder='', onblur="checkName(this.value)")
+                    .form-group.row.mt-4
+                        .col-sm
+                            input#validatename.form-control(type='text', name='username', placeholder='Username', onblur="checkName(this.value)")
                             #feedbackname
                     .form-group.row
-                        label.col-sm-4.col-form-label Password:
-                        .col-sm-8
-                            input#originpassword.form-control(type='password', name='password', placeholder='password')
+                        .col-sm
+                            input#emailvalidate.form-control(type='text', name='email', placeholder='Email Address', onblur="checkEmail(this.value)")
+                            #feedbackemail
+                    .form-group.row
+                        .col-sm
+                            input#originpassword.form-control(type='password', name='password', placeholder='Password')
                             #passwordlength.d-none.invalid-feedback At least 8 characters
                             #passwordnumber.d-none.invalid-feedback At least one number
                             #passwordlower.d-none.invalid-feedback At least one letter
                             #passwordupper.d-none.invalid-feedback At least one capital letter
                     .form-group.row
-                        label.col-sm-4.col-form-label Confirm Password:
-                        .col-sm-8
-                            input#validatepassword.form-control(type='password', name='', placeholder='confirm password', onblur="checkPassword(this.value)")
+                        .col-sm
+                            input#validatepassword.form-control(type='password', name='', placeholder='Confirm Password', onblur="checkPassword(this.value)")
                             #feedbackvalidate
                     .form-group.row
-                        label.col-sm-4.col-form-label Email:
-                        .col-sm-8
-                            input#emailvalidate.form-control(type='text', name='email', placeholder='sample@sample.com', onblur="checkEmail(this.value)")
-                            #feedbackemail
+                        .col
+                            input.form-control(type='text', name='first_name', placeholder='First_name', style="font-size: 11px")
+                        .col
+                            input.form-control(type='text', name='middle_initial', placeholder='Middle_name', style="font-size: 11px")
+                        .col
+                            input.form-control(type='text', name='last_name', placeholder='Last_name', style="font-size: 11px")
                     .form-group.row
                         .col-md-4.mb-3
-                        label.col-form-label First_name:
-                            input.form-control(type='text', name='first_name', placeholder='')
-                        .col-md-4.mb-3
-                        label.col-form-label Middle_initial:
-                            input.form-control(type='text', name='middle_initial', placeholder='')
-                        .col-md-4.mb-3
-                        label.col-form-label Last_name:
-                            input.form-control(type='text', name='last_name', placeholder='')
-                    .form-group.row
-                        .col-md-4.mb-3
-                            label.col-sm-4.col-form-label Country:
                             select.custom-select.mr-sm-3(name='country_name')
                                 option(selected='United States') United States
                                 option(value='China') China
                         .col-md-4.mb-3
-                            label.col-sm-4.col-form-label State:
                             select.custom-select.mr-sm-3(name='state_name')
                                 option(selected='Alabama') Alabama
                                 option(value='California') California
@@ -57,15 +48,34 @@ block content
                                 option(value='Arizona') Arizona
                                 option(value='Georgia') Georgia
                         .col-md-4.mb-3
-                            label.col-sm-4.col-form-label City:
                             select.custom-select.mr-sm-3(name='city_name')
                                 option(selected='Birmingham') Birmingham
                                 option(value='Montgomery') Montgomery
-                    .form-group.row
-                        label.col-sm-4.col-form-label Address:
-                        .col-sm-8
-                            input.form-control(type='text', name='street_address', placeholder='')
-                a.btn.btn-success.btn-lg.btn-block.mt-5(href='/create', role='button', style="font-size: 15px") Create account
+                a.btn.btn-success.btn-lg.btn-block.mt-5(href='/account/create/email', role='button', style="font-size: 15px") Continue
+
+    style.
+        .form-group input{
+            width:100%; 
+            border: 0; 
+            outline: 0; 
+            background: transparent; 
+            border-bottom: 1px solid green; 
+            font-size: 15px; 
+            box-shadow: none!important; 
+            border-radius: 0;
+        }
+        .form-group input:focus{
+            border-bottom: 2px solid green;
+        }
+        .form-group select{
+            width:100%; 
+            border: 0; 
+            outline: 0; 
+            border-bottom: 1px solid green; 
+            font-size: 11px; 
+            box-shadow: none!important; 
+            border-radius: 0;
+        }
 
     script.
         function checkName(val) {
