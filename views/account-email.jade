@@ -7,6 +7,24 @@ block content
         .row.d-flex.justify-content-center
             .jumbotron.text-center.bg-white.shadow.rounded.mt-5(style="width:35%; height: 80%")
                 h5.mt-3 Verify your email address
-                input.mt-4(type='text', placeholder='Email address', style="width:100%; border: 0; outline: 0; background: transparent; border-bottom: 1px solid green;")
+                form(action='#')
+                    .form-group.row.mt-4
+                        .col-sm
+                            input.mt-3.form-control(type='text', placeholder='Email address')
                 p.mt-4.small To confirm this is your email address, please tap the button below to receive a verification code.
                 a.btn.btn-success.btn-lg.btn-block.mt-5(href='#', role='button', style="font-size: 15px") Send me a verification code
+
+    style.
+        .form-group input{
+            width:100%; 
+            border: 0; 
+            outline: 0; 
+            background: transparent; 
+            border-bottom: 1px solid green; 
+            font-size: 15px; 
+            box-shadow: none!important; 
+            border-radius: 0;
+        }
+        .form-group input:focus{
+            border-bottom: 2px solid green;
+        }
