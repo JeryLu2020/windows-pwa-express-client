@@ -1,11 +1,11 @@
 extends layout
 
 head
-
+    
 block content
     .container
         .row.d-flex.justify-content-center
-            .jumbotron.text-center.bg-white.shadow.rounded.mt-5(style="width:35%; height: 80%")
+            .jumbotron.text-center.bg-white.shadow.rounded.mt-5(style="width:400px")
                 h5.mt-3 Sing up
                 form(action='/users/register', method='POST', id='register-record')
                     .form-group.row.mt-4
@@ -36,22 +36,17 @@ block content
                             input.form-control(type='text', name='last_name', placeholder='Last_name', style="font-size: 11px")
                     .form-group.row
                         .col-md-4.mb-3
-                            select.custom-select.mr-sm-3(name='country_name')
-                                option(selected='United States') United States
-                                option(value='China') China
+                            .bfh-selectbox.bfh-countries(data-country='US', data-flags='true')
+                            
                         .col-md-4.mb-3
-                            select.custom-select.mr-sm-3(name='state_name')
-                                option(selected='Alabama') Alabama
-                                option(value='California') California
-                                option(value='Texas') Texas
-                                option(value='New York') New York
-                                option(value='Arizona') Arizona
-                                option(value='Georgia') Georgia
+                            .bfh-selectbox.bfh-states(data-country='US', data-state='CA')
+                                
                         .col-md-4.mb-3
-                            select.custom-select.mr-sm-3(name='city_name')
+                            select.custom-select.mr-sm-4(name='city_name')
                                 option(selected='Birmingham') Birmingham
                                 option(value='Montgomery') Montgomery
                 a.btn.btn-success.btn-lg.btn-block.mt-5(href='/account/create/email', role='button', style="font-size: 15px") Continue
+
 
     style.
         .form-group input{
@@ -75,6 +70,9 @@ block content
             font-size: 11px; 
             box-shadow: none!important; 
             border-radius: 0;
+        }
+        .icon-flag {
+            display: inline-block !important;
         }
 
     script.

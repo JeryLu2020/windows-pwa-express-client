@@ -8,6 +8,7 @@ router.get('/', (req,res)=>{
 });
 
 router.get('/create', (req,res)=>{
+    // read contry-state data from local and 
     res.render('account-create');
 });
 
