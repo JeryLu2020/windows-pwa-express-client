@@ -38,10 +38,10 @@ block content
                         .col-md-5.mb-3.mt-2
                             input#country_selector(type='text', readonly='true',style="font-size: 11px")
                             
-                        .col-md-3.mb-3
+                        .col-md-3.mb-3.mt-2
                             
                                 
-                        .col-md-3.mb-3
+                        .col-md-3.mb-3.mt-2
                             select.custom-select.mr-sm-4(name='city_name')
                                 option(selected='Birmingham') Birmingham
                                 option(value='Montgomery') Montgomery
@@ -76,122 +76,137 @@ block content
 
     script.
         function checkName(val) {
-        if(!(val.match(/^\S+$/))) {
-            console.log("username is required");
-        } else {
-            $.post('/users/checkname', { username: val}, 
-            function(data){
-            if(data=='ok'){
-                $("#validatename").removeClass("is-invalid").addClass("is-valid");
-                $("#feedbackname").removeClass("invalid-feedback").addClass("valid-feedback");
-                $("#feedbackname").html("username is valid");
-            } else if( data=='no'){
-                $("#validatename").removeClass("is-valid").addClass("is-invalid");
-                $("#feedbackname").removeClass("valid-feedback").addClass("invalid-feedback");
-                $("#feedbackname").html("username already exist");
+            if(!(val.match(/^\S+$/))) {
+                console.log("username is required");
+            } else {
+                $.post('/users/checkname', { username: val}, 
+                function(data){
+                if(data=='ok'){
+                    $("#validatename").removeClass("is-invalid").addClass("is-valid");
+                    $("#feedbackname").removeClass("invalid-feedback").addClass("valid-feedback");
+                    $("#feedbackname").html("username is valid");
+                } else if( data=='no'){
+                    $("#validatename").removeClass("is-valid").addClass("is-invalid");
+                    $("#feedbackname").removeClass("valid-feedback").addClass("invalid-feedback");
+                    $("#feedbackname").html("username already exist");
+                }
+                })
             }
-            })
-        }
         }
 
         function checkPassword(val) {
-        var password = $("#originpassword").val();
-        if( password == val){
-            $("#validatepassword").removeClass("is-invalid").addClass("is-valid");
-            $("#feedbackvalidate").removeClass("invalid-feedback").addClass("valid-feedback");
-            $("#feedbackvalidate").html("passowrd is valid");
-        } else {
-            $("#validatepassword").removeClass("is-valid").addClass("is-invalid");
-            $("#feedbackvalidate").removeClass("valid-feedback").addClass("invalid-feedback");
-            $("#feedbackvalidate").html("passowrd doesn't match!!");
-        }
+            var password = $("#originpassword").val();
+            if( password == val){
+                $("#validatepassword").removeClass("is-invalid").addClass("is-valid");
+                $("#feedbackvalidate").removeClass("invalid-feedback").addClass("valid-feedback");
+                $("#feedbackvalidate").html("passowrd is valid");
+            } else {
+                $("#validatepassword").removeClass("is-valid").addClass("is-invalid");
+                $("#feedbackvalidate").removeClass("valid-feedback").addClass("invalid-feedback");
+                $("#feedbackvalidate").html("passowrd doesn't match!!");
+            }
         }
 
         function checkEmail(val) {
-        var email = $('#emailvalidate').val();
-        if(email != null){
-            if(isEmail(email)){
-            $("#emailvalidate").removeClass("is-invalid").addClass("is-valid");
-            $("#feedbackemail").removeClass("invalid-feedback").addClass("valid-feedback");
-            $("#feedbackemail").html("email is valid");
-            } else {
-            $("#emailvalidate").removeClass("is-valid").addClass("is-invalid");
-            $("#feedbackemail").removeClass("ivalid-feedback").addClass("invalid-feedback");
-            $("#feedbackemail").html("invalid email format");
+            var email = $('#emailvalidate').val();
+            if(email != null){
+                if(isEmail(email)){
+                    $("#emailvalidate").removeClass("is-invalid").addClass("is-valid");
+                    $("#feedbackemail").removeClass("invalid-feedback").addClass("valid-feedback");
+                    $("#feedbackemail").html("email is valid");
+                } else {
+                    $("#emailvalidate").removeClass("is-valid").addClass("is-invalid");
+                    $("#feedbackemail").removeClass("ivalid-feedback").addClass("invalid-feedback");
+                    $("#feedbackemail").html("invalid email format");
+                }
             }
-        }
         }
 
         function isEmail(email) {
-        var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-        return regex.test(email);
+            var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            return regex.test(email);
         }
 
         $(document).ready(function() {
-        //login and logout button
-        if('#{loggedIn}'){
-            //- console.log('loggedin');
-            $('#loginbuttom').removeClass('d-block').addClass('d-none');
-            $('#logoutbuttom').removeClass('d-none').addClass('d-block');
-        } else {
-            //- console.log('not login');
-            $('#loginbuttom').removeClass('d-none').addClass('d-block');
-            $('#logoutbuttom').removeClass('d-block').addClass('d-none');
-        }
+            //login and logout button
+            if('#{loggedIn}'){
+                //- console.log('loggedin');
+                $('#loginbuttom').removeClass('d-block').addClass('d-none');
+                $('#logoutbuttom').removeClass('d-none').addClass('d-block');
+            } else {
+                //- console.log('not login');
+                $('#loginbuttom').removeClass('d-none').addClass('d-block');
+                $('#logoutbuttom').removeClass('d-block').addClass('d-none');
+            }
+    
+            // password strengthen
+            $('#originpassword').keyup(function() {
+                var val = $('#originpassword').val();
+                // is-validate length
+                if(val.length >= 8) {
+                    $('#passwordlength').removeClass('invalid-feedback').addClass('valid-feedback');
+                } else {
+                    $('#passwordlength').removeClass('valid-feedback').addClass('invalid-feedback');     
+                }
+
+                // is-validate numbers
+                var numbers = /[0-9]/g;
+                if(val.match(numbers)) {  
+                    $('#passwordnumber').removeClass('invalid-feedback').addClass('valid-feedback');
+                } else {
+                    $('#passwordnumber').removeClass('valid-feedback').addClass('invalid-feedback');
+                }
+
+                // is-validate lowercase letters
+                var lowerCaseLetters = /[a-z]/g;
+                if(val.match(lowerCaseLetters)) {  
+                    $('#passwordlower').removeClass('invalid-feedback').addClass('valid-feedback');
+                } else {
+                    $('#passwordlower').removeClass('valid-feedback').addClass('invalid-feedback');
+                }
+                
+                // is-validate capital letters
+                var upperCaseLetters = /[A-Z]/g;
+                if(val.match(upperCaseLetters)) {  
+                    $('#passwordupper').removeClass('invalid-feedback').addClass('valid-feedback');
+                } else {
+                    $('#passwordupper').removeClass('valid-feedback').addClass('invalid-feedback');
+                }
+
+                if(val.length >= 8 && val.match(numbers) && val.match(lowerCaseLetters) && val.match(upperCaseLetters)){
+                    $('#originpassword').removeClass("is-invalid").addClass("is-valid");
+                } else {
+                    $('#originpassword').removeClass("is-valid").addClass("is-invalid");
+                }
+            }).focus(function() {
+                $('#passwordlength').removeClass('d-none').addClass('d-block');
+                $('#passwordnumber').removeClass('d-none').addClass('d-block');
+                $('#passwordlower').removeClass('d-none').addClass('d-block');
+                $('#passwordupper').removeClass('d-none').addClass('d-block');
+            }).blur(function() {
+                $('#passwordlength').removeClass('d-block').addClass('d-none');
+                $('#passwordnumber').removeClass('d-block').addClass('d-none');
+                $('#passwordlower').removeClass('d-block').addClass('d-none');
+                $('#passwordupper').removeClass('d-block').addClass('d-none');
+            })
+
+
+            $("#country_selector").countrySelect({  
+                preferredCountries: ['us', 'ca', 'cn']
+            });
+
+            var countryData = '';
+            $("#country_selector").blur(function(){
+                var selectedData = $("#country_selector").countrySelect("getSelectedCountryData");
+                countryData = selectedData.iso2;
+                console.log(countryData);
+            })
+            
+        })
         
 
-        // password strengthen
-        $('#originpassword').keyup(function() {
-            var val = $('#originpassword').val();
-            // is-validate length
-            if(val.length >= 8) {
-            $('#passwordlength').removeClass('invalid-feedback').addClass('valid-feedback');
-            } else {
-            $('#passwordlength').removeClass('valid-feedback').addClass('invalid-feedback');     
-            }
 
-            // is-validate numbers
-            var numbers = /[0-9]/g;
-            if(val.match(numbers)) {  
-            $('#passwordnumber').removeClass('invalid-feedback').addClass('valid-feedback');
-            } else {
-            $('#passwordnumber').removeClass('valid-feedback').addClass('invalid-feedback');
-            }
 
-            // is-validate lowercase letters
-            var lowerCaseLetters = /[a-z]/g;
-            if(val.match(lowerCaseLetters)) {  
-            $('#passwordlower').removeClass('invalid-feedback').addClass('valid-feedback');
-            } else {
-            $('#passwordlower').removeClass('valid-feedback').addClass('invalid-feedback');
-            }
-            
-            // is-validate capital letters
-            var upperCaseLetters = /[A-Z]/g;
-            if(val.match(upperCaseLetters)) {  
-            $('#passwordupper').removeClass('invalid-feedback').addClass('valid-feedback');
-            } else {
-            $('#passwordupper').removeClass('valid-feedback').addClass('invalid-feedback');
-            }
 
-            if(val.length >= 8 && val.match(numbers) && val.match(lowerCaseLetters) && val.match(upperCaseLetters)){
-            $('#originpassword').removeClass("is-invalid").addClass("is-valid");
-            } else {
-            $('#originpassword').removeClass("is-valid").addClass("is-invalid");
-            }
-        }).focus(function() {
-            $('#passwordlength').removeClass('d-none').addClass('d-block');
-            $('#passwordnumber').removeClass('d-none').addClass('d-block');
-            $('#passwordlower').removeClass('d-none').addClass('d-block');
-            $('#passwordupper').removeClass('d-none').addClass('d-block');
-        }).blur(function() {
-            $('#passwordlength').removeClass('d-block').addClass('d-none');
-            $('#passwordnumber').removeClass('d-block').addClass('d-none');
-            $('#passwordlower').removeClass('d-block').addClass('d-none');
-            $('#passwordupper').removeClass('d-block').addClass('d-none');
-        })
-        })
-
-        $("#country_selector").countrySelect({
-            preferredCountries: ['us', 'ca', 'cn']
-        });
+//-  https://github.com/mrmarkfrench/country-select-js
+//- country code https://github.com/RudeySH/SteamCountries/tree/master/json
