@@ -35,19 +35,18 @@ block content
                         .col
                             input.form-control(type='text', name='last_name', placeholder='Last_name', style="font-size: 11px")
                     .form-group.row
-                        .col-md-4.mb-3
-                            .bfh-selectbox.bfh-countries(data-country='US', data-flags='true')
+                        .col-md-5.mb-3.mt-2
+                            input#country_selector(type='text', readonly='true',style="font-size: 11px")
                             
-                        .col-md-4.mb-3
-                            .bfh-selectbox.bfh-states(data-country='US', data-state='CA')
+                        .col-md-3.mb-3
+                            
                                 
-                        .col-md-4.mb-3
+                        .col-md-3.mb-3
                             select.custom-select.mr-sm-4(name='city_name')
                                 option(selected='Birmingham') Birmingham
                                 option(value='Montgomery') Montgomery
                 a.btn.btn-success.btn-lg.btn-block.mt-5(href='/account/create/email', role='button', style="font-size: 15px") Continue
-
-
+            
     style.
         .form-group input{
             width:100%; 
@@ -192,3 +191,7 @@ block content
             $('#passwordupper').removeClass('d-block').addClass('d-none');
         })
         })
+
+        $("#country_selector").countrySelect({
+            preferredCountries: ['us', 'ca', 'cn']
+        });
