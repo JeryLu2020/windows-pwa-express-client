@@ -11,6 +11,7 @@
     "name": ""
   },
   "dependencies": {
+    "@sendgrid/mail": "^6.4.0",
     "body-parser": "^1.15.0",
     "connect-mongo": "^2.0.3",
     "cookie-parser": "^1.4.0",

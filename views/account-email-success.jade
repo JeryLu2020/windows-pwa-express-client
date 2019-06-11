@@ -1,0 +1,26 @@
+extends layout
+
+head
+
+block content
+    .container
+        .row.d-flex.justify-content-center
+            .jumbotron.text-center.bg-white.shadow.rounded.mt-5(style="width:400px")
+                h4.mt-3 Verification code sent successfully
+                p.mt-4.small please check your email address #{email}
+                a.btn.btn-success.btn-lg.btn-block.mt-5.text-light(href='/', role='button', style="font-size: 15px") Login In
+
+    style.
+        .form-group input{
+            width:100%; 
+            border: 0; 
+            outline: 0; 
+            background: transparent; 
+            border-bottom: 1px solid green; 
+            font-size: 15px; 
+            box-shadow: none!important; 
+            border-radius: 0;
+        }
+        .form-group input:focus{
+            border-bottom: 2px solid green;
+        }
