@@ -1,0 +1,104 @@
+extends layout
+
+head
+    
+block content
+    .container
+        .row.d-flex.justify-content-center
+            .jumbotron.text-center.bg-white.shadow.rounded.mt-5(style="width:400px")
+                h5.mt-3 More information
+                form.mt-4(action='/users/register', method='POST', id='register-record')
+                    .form-group.row
+                        .col.pr-0
+                            input.form-control(type='text', name='first_name', placeholder='First_name', style="font-size: 12px")
+                        .col
+                            input.form-control(type='text', name='middle_initial', placeholder='Middle_name', style="font-size: 12px")
+                        .col.pl-0
+                            input.form-control(type='text', name='last_name', placeholder='Last_name', style="font-size: 12px")
+                    .form-group.row
+                        .col.pr-0
+                            input#country_selector.form-control(type='text', readonly='true', style="font-size: 12px; background: 000000")       
+                        .col
+                            select#select_state.custom-select.mr-sm-4(name='state_name', style="font-size: 12px")
+                                option(value='state', style='display: block;') state    
+                        .col.pl-0
+                            input.form-control(type='text', name='city_name', placeholder='city_name', style="font-size: 12px; background: 000000")   
+                    .form-group.row
+                        .col
+                            input.form-control(type='text', name='address1', placeholder='Address1')
+                    .form-group.row
+                        .col
+                            input.form-control(type='text', name='address1', placeholder='Address2')
+                a.btn.btn-success.btn-lg.btn-block.mt-5(href='/account/create/email', role='button', style="font-size: 15px") Continue
+            
+    style.
+        .form-group input{
+            width:100%; 
+            border: 0; 
+            outline: 0; 
+            background: transparent; 
+            border-bottom: 1px solid green; 
+            font-size: 15px; 
+            box-shadow: none!important; 
+            border-radius: 0;
+        }
+        .form-group input:focus{
+            border-bottom: 2px solid green;
+        }
+        .form-group select{
+            width:100%; 
+            border: 0; 
+            outline: 0; 
+            border-bottom: 1px solid green; 
+            font-size: 11px; 
+            box-shadow: none!important; 
+            border-radius: 0;
+        }
+        .icon-flag {
+            display: inline-block !important;
+        }
+
+    script.
+        $(document).ready(function() {
+            
+            $("#country_selector").countrySelect({  
+                preferredCountries: ['us', 'ca', 'cn']
+            });
+
+            var countryData = '';
+            $("#country_selector").change(function(){
+                var selectedData = $("#country_selector").countrySelect("getSelectedCountryData");
+                countryData = selectedData.iso2.toUpperCase();
+                if( countryData ){
+                    $.post('/account/create/get_state', { country_name: countryData}, function(data){
+                        if(data){
+                            $('#select_state').empty();
+                            $.each(data, function(key, value) {
+                                var $option = $("<option/>", {
+                                    value: value,
+                                    text: value
+                                });
+                                $('#select_state').append($option);
+                            });
+
+                        } else {
+                            console.log('error');
+                        }
+                    })
+                }
+                
+            });
+
+            $('#select_state').change(function(){
+                console.log($('#select_state').val());
+            });
+            
+        })
+        
+
+
+
+
+//-  https://github.com/mrmarkfrench/country-select-js
+//- country code https://github.com/RudeySH/SteamCountries/tree/master/json
+//- mongoimport.exe -h jerytest.documents.azure.com:10255 -u jerytest -p IZ8nYAVROPoQL8kSalbtMwsAhBK8oKft7IdNMm6NFXHrPwinNVmxrGsmURfSD8N5yxFemsMRtIxX5DWG6epJ1A== --ssl --sslAllowInvalidCertificates --db React --collection state_cities <  c:\Users\59131\Desktop\windows-pwa-express-client\public\resources\states-cities.json

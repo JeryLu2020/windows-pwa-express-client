@@ -27,25 +27,7 @@ block content
                         .col-sm
                             input#validatepassword.form-control(type='password', name='', placeholder='Confirm Password', onblur="checkPassword(this.value)")
                             #feedbackvalidate
-                    .form-group.row
-                        .col
-                            input.form-control(type='text', name='first_name', placeholder='First_name', style="font-size: 11px")
-                        .col
-                            input.form-control(type='text', name='middle_initial', placeholder='Middle_name', style="font-size: 11px")
-                        .col
-                            input.form-control(type='text', name='last_name', placeholder='Last_name', style="font-size: 11px")
-                    .form-group.row
-                        .col-md-5.mb-3.mt-2
-                            input#country_selector(type='text', readonly='true',style="font-size: 11px")
-                            
-                        .col-md-3.mb-3.mt-2
-                            
-                                
-                        .col-md-3.mb-3.mt-2
-                            select.custom-select.mr-sm-4(name='city_name')
-                                option(selected='Birmingham') Birmingham
-                                option(value='Montgomery') Montgomery
-                a.btn.btn-success.btn-lg.btn-block.mt-5(href='/account/create/email', role='button', style="font-size: 15px") Continue
+                a.btn.btn-success.btn-lg.btn-block.mt-5(href='/account/create/details', role='button', style="font-size: 15px") Continue
             
     style.
         .form-group input{
@@ -79,17 +61,16 @@ block content
             if(!(val.match(/^\S+$/))) {
                 console.log("username is required");
             } else {
-                $.post('/users/checkname', { username: val}, 
-                function(data){
-                if(data=='ok'){
-                    $("#validatename").removeClass("is-invalid").addClass("is-valid");
-                    $("#feedbackname").removeClass("invalid-feedback").addClass("valid-feedback");
-                    $("#feedbackname").html("username is valid");
-                } else if( data=='no'){
-                    $("#validatename").removeClass("is-valid").addClass("is-invalid");
-                    $("#feedbackname").removeClass("valid-feedback").addClass("invalid-feedback");
-                    $("#feedbackname").html("username already exist");
-                }
+                $.post('/users/checkname', { username: val}, function(data){
+                    if(data=='ok'){
+                        $("#validatename").removeClass("is-invalid").addClass("is-valid");
+                        $("#feedbackname").removeClass("invalid-feedback").addClass("valid-feedback");
+                        $("#feedbackname").html("username is valid");
+                    } else if( data=='no'){
+                        $("#validatename").removeClass("is-valid").addClass("is-invalid");
+                        $("#feedbackname").removeClass("valid-feedback").addClass("invalid-feedback");
+                        $("#feedbackname").html("username already exist");
+                    }
                 })
             }
         }
@@ -189,19 +170,6 @@ block content
                 $('#passwordlower').removeClass('d-block').addClass('d-none');
                 $('#passwordupper').removeClass('d-block').addClass('d-none');
             })
-
-
-            $("#country_selector").countrySelect({  
-                preferredCountries: ['us', 'ca', 'cn']
-            });
-
-            var countryData = '';
-            $("#country_selector").blur(function(){
-                var selectedData = $("#country_selector").countrySelect("getSelectedCountryData");
-                countryData = selectedData.iso2;
-                console.log(countryData);
-            })
-            
         })
         
 
