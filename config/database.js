@@ -21,12 +21,13 @@ db.once('open', (callback) => {
 
 //create schema
 const heroSchema = new Schema({
-        name:String,
-        message:String,
+
         first_name: String,
         middle_initial: String,
         last_name: String,
+
         street_address: String,
+        company_address: String,
 
         country_name: String,
         state_name: String,
@@ -47,8 +48,11 @@ const heroSchema = new Schema({
             type: String,
             required: true,  
         },
-        email: String,
-
+        email: {
+            type: String,
+            required: true,
+        },
+        
         // user login activities
         heroactivitylog: [{
             loginDateTime : String,

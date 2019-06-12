@@ -7,7 +7,7 @@ block content
         .row.d-flex.justify-content-center
             .jumbotron.text-center.bg-white.shadow.rounded.mt-5(style="width:400px")
                 h5.mt-3 More information
-                form.mt-4(action='/users/register', method='POST', id='register-record')
+                form.mt-4(action='/account/register', method='POST', id='create-details')
                     .form-group.row
                         .col.pr-0
                             input.form-control(type='text', name='first_name', placeholder='First_name', style="font-size: 12px")
@@ -17,7 +17,7 @@ block content
                             input.form-control(type='text', name='last_name', placeholder='Last_name', style="font-size: 12px")
                     .form-group.row
                         .col.pr-0
-                            input#country_selector.form-control(type='text', readonly='true', style="font-size: 12px; background: 000000")
+                            input#country_selector.form-control(type='text', name='country_name', readonly='true', style="font-size: 12px; background: 000000")
                             input#country_code(type="hidden")
                         .col
                             select#select_state.custom-select.mr-sm-4(name='state_name', style="font-size: 12px")
@@ -26,11 +26,11 @@ block content
                             input.form-control(type='text', name='city_name', placeholder='City', style="font-size: 12px; background: 000000")   
                     .form-group.row
                         .col
-                            input.form-control(type='text', name='address1', placeholder='Address1')
+                            input.form-control(type='text', name='street_address', placeholder='Address1')
                     .form-group.row
                         .col
-                            input.form-control(type='text', name='address1', placeholder='Address2')
-                a.btn.btn-success.btn-lg.btn-block.mt-5(href='/account/create/email', role='button', style="font-size: 15px") Continue
+                            input.form-control(type='text', name='company_address', placeholder='Address2')
+                a.btn.btn-success.btn-lg.btn-block.mt-5.text-white(role='button', style="font-size: 15px", onclick="document.getElementById('create-details').submit();") Continue
             
     style.
         .form-group input{

@@ -7,11 +7,11 @@ block content
         .row.d-flex.justify-content-center
             .jumbotron.text-center.bg-white.shadow.rounded.mt-5(style="width:400px")
                 h5.mt-3 Sing in
-                form(action='#')
+                form(action='/account/login', method="POST", id="account-login")
                     .form-group.row.mt-4
                         .col-sm
-                            input.mt-3.form-control(type='text', placeholder='Email address')
-                a.btn.btn-success.btn-lg.btn-block.mt-4(href='#', role='button', style="font-size: 15px") Next
+                            input.mt-3.form-control(type='text', name="email", placeholder='Email address')
+                a.btn.btn-success.btn-lg.btn-block.mt-4(role='button', style="font-size: 15px", onclick="document.getElementById('account-login').submit()") Next
                 .form-check.mt-4.float-left
                     input#exampleCheck1.form-check-input.align-center(type='checkbox',style="display: center;")
                     label.align-middle(for='exampleCheck1', style="font-size: 12px; margin-top: 0") stay signed in
