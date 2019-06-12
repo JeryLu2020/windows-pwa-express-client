@@ -1,0 +1,60 @@
+extends layout
+
+head
+
+block content
+    .container.fluid
+        br 
+        h3 Your Profile
+        .row.border-top
+            .col
+                form() 
+                    .form-group.row
+                        label.col-sm-3.col-form-label username:
+                        .col-sm-9
+                            input.form-control-plaintext(type='text', readonly='' value='#{userprofiler.username}')
+                    .form-group.row
+                        label.col-sm-3.col-form-label password:
+                        .col-sm-9
+                            input.form-control-plaintext(type='password', readonly='', value='#{userprofiler.password}')
+                    .form-group.row
+                        label.col-sm-3.col-form-label email:
+                        .col-sm-9
+                            input.form-control-plaintext(type='text', readonly='', value='#{userprofiler.email}')
+                    .form-group.row
+                        label.col-sm-3.col-form-label first_name:
+                        .col-sm-9
+                            input.form-control-plaintext(type='text', readonly='', value='#{userprofiler.first_name}')
+                    .form-group.row
+                        label.col-sm-3.col-form-label middle_name:
+                        .col-sm-9
+                            input.form-control-plaintext(type='text', readonly='', value='#{userprofiler.middle_initial}')
+                    .form-group.row
+                        label.col-sm-3.col-form-label last_name:
+                        .col-sm-9
+                            input.form-control-plaintext(type='text', readonly='', value='#{userprofiler.last_name}')
+            .col
+                form() 
+                    .form-group.row
+                        label.col-sm-3.col-form-label country:
+                        .col-sm-9
+                            input.form-control-plaintext(type='text', readonly='', value='#{userprofiler.country_name}')
+                    .form-group.row
+                        label.col-sm-3.col-form-label state:
+                        .col-sm-9
+                            input.form-control-plaintext(type='text', readonly='', value='#{userprofiler.state_name}')
+                    .form-group.row
+                        label.col-sm-3.col-form-label city:
+                        .col-sm-9
+                            input.form-control-plaintext(type='text', readonly='', value='#{userprofiler.city_name}')
+
+        h5 Login Activities
+        each info in loginactivity.reverse()
+            .row.border-top
+                .col-1
+                    h6.badge.badge-pill.badge-success login
+                .col-3
+                    small #{info.loginDateTime}
+                .col-8
+                    small #{info.device_ip}
+                    small #{info.device_os}

@@ -208,5 +208,30 @@ router.get('/logout', (req, res)=>{
       }
 });
 
+// user profile
+router.get('/profile', (req, res)=> {
+    if(req.session.userId){
+        Hero.findById(req.session.userId)
+            .then(data=>{
+                if(!data){
+                    return res.render('error', { errmsg: 'no record' });
+                }
+                console.log('findOne success11' + data);
+                console.log("data.heroactivitylog" + data.heroactivitylog);
+                return res.render('account-profile', { 
+                    layout: 'layout', 
+                    userprofiler : data,
+                    loginactivity : data.heroactivitylog,
+                });
+            })
+            .catch(err=>{
+                return res.render('error', { errmsg: err });
+            });
+    }
+    else {
+        res.render('error', { errmsg: "Please Login" });
+    }
+});
+
 
 module.exports = router;
