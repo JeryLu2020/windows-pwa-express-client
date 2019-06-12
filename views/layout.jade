@@ -25,10 +25,26 @@ body
           //- li.nav-item
           //-   a.nav-link(href='/users') MyProfile
         span
-          a.btn.btn-outline-success(href='/account') Login
+          a#loginbuttom.btn.btn-outline-success(href='/account') Login
+          form(action="/account/logout", method="GET")
+            button#logoutbuttom.btn.btn-outline-secondary.d-none(type="submit") Logout
     .container-fluid
       block content
-       
+
+    script.
+      $(document).ready(function() {
+        //login and logout button
+        if('#{loggedIn}'){
+          //- console.log('loggedin');
+          $('#loginbuttom').removeClass('d-block').addClass('d-none');
+          $('#logoutbuttom').removeClass('d-none').addClass('d-block');
+        } else {
+          //- console.log('not login');
+          $('#loginbuttom').removeClass('d-none').addClass('d-block');
+          $('#logoutbuttom').removeClass('d-block').addClass('d-none');
+        }
+      });
+
         //-   | hello 
   //-       span
   //-         .btn-toolbar
@@ -181,17 +197,7 @@ body
   //-     return regex.test(email);
   //-   }
 
-  //-   $(document).ready(function() {
-  //-     //login and logout button
-  //-     if('#{loggedIn}'){
-  //-       //- console.log('loggedin');
-  //-       $('#loginbuttom').removeClass('d-block').addClass('d-none');
-  //-       $('#logoutbuttom').removeClass('d-none').addClass('d-block');
-  //-     } else {
-  //-       //- console.log('not login');
-  //-       $('#loginbuttom').removeClass('d-none').addClass('d-block');
-  //-       $('#logoutbuttom').removeClass('d-block').addClass('d-none');
-  //-     }
+
       
 
   //-     // password strengthen

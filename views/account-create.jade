@@ -61,7 +61,7 @@ block content
             if(!(val.match(/^\S+$/))) {
                 console.log("username is required");
             } else {
-                $.post('/users/checkname', { username: val}, function(data){
+                $.post('/account/checkname', { username: val}, function(data){
                     if(data=='ok'){
                         $("#validatename").removeClass("is-invalid").addClass("is-valid");
                         $("#feedbackname").removeClass("invalid-feedback").addClass("valid-feedback");

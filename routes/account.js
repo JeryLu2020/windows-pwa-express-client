@@ -27,13 +27,85 @@ router.post('/login', (req, res)=>{
 });
 
 // user login success page
+router.post('/login/success', (req, res) => {
+    // get infomation
+    var logindatetime = Date().toString();
+    var wholeip = req.headers['x-forwarded-for'] || req.ip; // x-forward-for is for proxy
+    var ip = wholeip.split(":")[0];
+    var os = req.headers['user-agent'];
+    var number = 1;
 
+    let loginemail = req.body.email;
+    let loginpassword = req.body.password;
 
+    if(loginemail=="admin@admin.com" && loginpassword=="Admin123"){
+        return res.render('error', { errmsg: "You are not allowed to login as admin" });
+    } else {
+        // find users id
+        Hero.findOne({ email: loginemail, password: loginpassword})
+            .then(data=>{
+                if(!data){
+                    return res.render('error', { errmsg: 'no record' });
+                }
+                console.log('login success' + data._id);
+                // let userProfiler = JSON.parse(JSON.stringify(data));
+                // console.log("jsonobj:" + userProfiler[0]._id);
+                req.session.userId = data._id;
+                req.session.loggedIn = true;
+
+                updateactivity(data._id, logindatetime, ip, os, number);
+
+                // redirect to home page after success login
+                return res.redirect('/');
+            })
+            .catch(err=>{
+                return res.render('error', { errmsg: err });
+            });
+    }
+});
+// update user activity
+function updateactivity (mongoid, logindatetime, ip, os, number) {
+    Hero.updateOne( { _id : mongoid }, { 
+        $addToSet: {
+            heroactivitylog:
+                { 
+                    loginDateTime : logindatetime,
+                    loginSuccess  : true,
+                    device_ip : ip,
+                    device_os  : os,
+                    loginnumber: number++,
+                }
+        },
+    }, {new: true})
+        .then(data => {
+            if(!data){
+                console.log('updateactivity failed');
+            }
+            console.log('updateactivity success');
+        })
+        .catch(err=>{
+            console.log('updateactivity failure' + err);
+        });
+}
 
 // user create first page
 router.get('/create', (req,res)=>{
     res.render('account-create');
 });
+
+// check whether username is already taken
+router.post('/checkname', (req, res)=> {
+     Hero.findOne({ username: req.body.username})
+        .then(data=>{
+            if(!data){
+                return res.send("ok");
+            }
+            return res.send("no");
+        })
+        .catch(err=>{
+            return res.render('error', { errmsg: err });
+        });
+})
 
 // user create detail page
 router.post('/create/details', (req,res)=>{
@@ -117,6 +189,23 @@ router.post('/create/verifyEmail', (req,res)=>{
             return res.render('account-email-success', { email: eamilAddress});
         }
     });
+});
+
+// user logout
+router.get('/logout', (req, res)=>{
+    if (req.session.userId) {
+        // delete session object
+        req.session.destroy(function (err) {
+          if (err) {
+              return res.render('error', { errmsg: err });
+          } else {
+              return res.redirect('/');
+          }
+        });
+      }
+      else{
+          return res.redirect('/');
+      }
 });
 
 
