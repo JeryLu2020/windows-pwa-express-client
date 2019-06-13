@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var country = require('countryjs');
+var unirest = require('unirest');
 const sgMail = require('@sendgrid/mail');
 
 const Hero = require('../config/database');
@@ -109,9 +110,18 @@ router.post('/checkname', (req, res)=> {
 
 // user create detail page
 router.post('/create/details', (req,res)=>{
-        req.session.username = req.body.username;
-        req.session.email = req.body.email;
-        req.session.password = req.body.password;
+    req.session.username = req.body.username;
+    req.session.email = req.body.email;
+    req.session.password = req.body.password;
+
+
+    unirest.get("https://wft-geo-db.p.rapidapi.com/v1/geo/cities?countryIds=233")
+    .header("X-RapidAPI-Host", "wft-geo-db.p.rapidapi.com")
+    .header("X-RapidAPI-Key", "5216348952mshebe5b6014a65109p1067e3jsnb192c465fd0c")
+    .end(function (result) {
+        console.log("unirest: "+ result.status, result.headers, result.body);
+    });
+
     if(req.session.username){
         console.log(req.session.username + req.session.email + req.session.password);
         return res.render('account-create-details');

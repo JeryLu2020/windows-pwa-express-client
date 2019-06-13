@@ -27,6 +27,7 @@
     "pug": "^2.0.0-beta6",
     "request": "^2.88.0",
     "serve-favicon": "^2.3.0",
+    "unirest": "^0.6.0",
     "web-push": "^3.3.3"
   },
   "devDependencies": {
