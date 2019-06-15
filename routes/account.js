@@ -114,7 +114,11 @@ router.post('/create/details', (req,res)=>{
     req.session.email = req.body.email;
     req.session.password = req.body.password;
 
-    return res.render('account-create-details');
+    if(req.body.username){
+        return res.render('account-create-details');
+    } else{
+        return res.render('error', { errmsg: "please fill in register form first" });
+    }
 });
 
 // store user info to database

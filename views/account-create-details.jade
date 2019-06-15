@@ -16,22 +16,22 @@ block content
                         .col.pl-0
                             input.form-control(type='text', name='last_name', placeholder='Last_name', style="font-size: 12px")
                     .form-group.row
-                        .col-5.pr-0
-                            input#country_selector.form-control(type='text', name='country_name', readonly='true', style="font-size: 12px; background: 000000")
-                            input#country_code(type="hidden")
-                        .col-4
-                            select#state_selector.custom-select.mr-sm-4(name='state_name', style="font-size: 12px")
-                                option(value='State', style='display: block;font-size: 12px') State
-                        .col-3.pl-0
-                            select#city_selector.custom-select.mr-sm-4(name='city_name', style="font-size: 12px")
-                                option(value='City', style='display: block;font-size: 12px') City
-                                option(value='Others', style='display: block;font-size: 12px') Others
-                    .form-group.row
                         .col
                             input.form-control(type='text', name='street_address', placeholder='Address1')
                     .form-group.row
                         .col
                             input.form-control(type='text', name='company_address', placeholder='Address2')
+                    .form-group.row
+                        .col-5.pr-0
+                            input#country_selector.form-control(type='text', name='country_name', readonly='true', style="font-size: 12px; background: 000000")
+                            input#country_code(type="hidden")
+                        .col-4
+                            select#state_selector.form-control.custom-select.mr-sm-4(name='state_name', style="font-size: 12px")
+                                option(value='State', style='display: block;font-size: 12px') State
+                        .col-3.pl-0
+                            select#city_selector.form-control.custom-select.mr-sm-4(name='city_name', style="font-size: 12px")
+                                option(value='City', style='display: block;font-size: 12px') City
+                                option(value='Others', style='display: block;font-size: 12px') Others
                 a.btn.btn-success.btn-lg.btn-block.mt-5.text-white(role='button', style="font-size: 15px", onclick="document.getElementById('create-details').submit();") Continue
             
     style.
@@ -59,6 +59,10 @@ block content
         }
         .icon-flag {
             display: inline-block !important;
+        }
+        .custom-select {
+            padding-left: 0.1rem;
+            padding-right: 1.3rem;
         }
 
     script.
@@ -92,14 +96,17 @@ block content
                         });
                         $('#city_selector').append($option);
                     });
+                    $('#city_selector').append($('<option>', {
+                        value: 'Others',
+                        text: 'Others'
+                    }));
                 }
             })
 
             // get states by country selecter
-            var countryData = '';
             $("#country_selector").change(function(){
                 var selectedData = $("#country_selector").countrySelect("getSelectedCountryData");
-                countryData = selectedData.iso2.toUpperCase();
+                var countryData = selectedData.iso2.toUpperCase();
                 //- console.log(countryData);
                 if( countryData ){
                     $.post('/account/create/get_state', { country_name: countryData}, function(states){
@@ -119,12 +126,17 @@ block content
                                         //- console.log("cities" + cities);
                                         $('#city_selector').empty();
                                         $.each(cities, function(key, value) {
-                                            var $option = $("<option/>", {
+                                            var $option = $("<option/>", 
+                                            {
                                                 value: value,
                                                 text: value
                                             });
                                             $('#city_selector').append($option);
                                         });
+                                        $('#city_selector').append($('<option>', {
+                                            value: 'Others',
+                                            text: 'Others'
+                                        }));
                                     } else {
                                         $('#city_selector').empty();
                                         var $option = $("<option/>", {
@@ -150,7 +162,9 @@ block content
             });
 
             $('#state_selector').change(function(){
-                console.log($('#state_selector').val());
+                var selectedData = $("#country_selector").countrySelect("getSelectedCountryData");
+                var countryData = selectedData.iso2.toUpperCase();
+                //- console.log($('#state_selector').val());
                 // get cities by state
                 $('#city_selector').empty();
                 $.post('/account/create/get_city', { country_name: countryData, state_name: $('#state_selector').val()}, function(cities){
@@ -164,6 +178,10 @@ block content
                             });
                             $('#city_selector').append($option);
                         });
+                        $('#city_selector').append($('<option>', {
+                            value: 'Others',
+                            text: 'Others'
+                        }));
                     } else {
                         var $option = $("<option/>", {
                             value: $('#state_selector').val(),
