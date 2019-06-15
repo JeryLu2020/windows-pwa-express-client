@@ -1,12 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var country = require('countryjs');
-const sgMail = require('@sendgrid/mail');
-const countrystatecity= require('countrycitystatejson')
+var unirest = require('unirest');
+var countrystatecity= require('countrycitystatejson')
 
 const Hero = require('../config/database');
-
-sgMail.setApiKey("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");
 
 router.get('/', (req,res)=>{
     res.render('account');
@@ -183,19 +181,30 @@ router.get('/create/email', (req,res)=>{
 // email sent result page
 router.post('/create/verifyEmail', (req,res)=>{
     var eamilAddress = (req.body.email_address);
-    const msg = {
-        to: eamilAddress,
-        from: 'test@webasian.net',
-        subject: 'Verfy your code for registration',
-        text: 'below is the code',
-        html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-    };
-    sgMail.send(msg, (error, result) => {
-        if (error) {
-            return res.render('error', { errmsg: err });
+    unirest.post("https://rapidprod-sendgrid-v1.p.rapidapi.com/mail/send")
+    .header("X-RapidAPI-Host", "rapidprod-sendgrid-v1.p.rapidapi.com")
+    .header("X-RapidAPI-Key", "5216348952mshebe5b6014a65109p1067e3jsnb192c465fd0c")
+    .header("Content-Type", "application/json")
+    .send({"personalizations":
+    [
+        {
+            "to":[{"email":eamilAddress}],
+            "subject":"Hello, World!"
         }
-        else {
-            return res.render('account-email-success', { email: eamilAddress});
+    ],
+    "from":{"email":"from_address@example.com"},
+    "content":
+    [
+        {"type":"text/plain","value":"Hello, World!"}
+    ]})
+    .end(function (result) {
+        console.log(result.status);
+        // console.log(result.headers);
+        // console.log(result.body);
+        if(result.status == 202 || result.status == 200){
+            res.render('account-email-success', { email: eamilAddress });
+        } else {
+            return res.render('error', { errmsg: "please go back and try again" });
         }
     });
 });
