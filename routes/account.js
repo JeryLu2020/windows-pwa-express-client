@@ -175,7 +175,7 @@ router.post('/create/get_city', (req, res)=>{
 
 // email verification page
 router.get('/create/email', (req,res)=>{
-    res.render('account-email');
+    res.render('account-email', { email: req.session.email });
 });
 
 // email sent result page
