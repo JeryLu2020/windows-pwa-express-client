@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var country = require('countryjs');
-var unirest = require('unirest');
 const sgMail = require('@sendgrid/mail');
+const countrystatecity= require('countrycitystatejson')
 
 const Hero = require('../config/database');
 
@@ -114,20 +114,7 @@ router.post('/create/details', (req,res)=>{
     req.session.email = req.body.email;
     req.session.password = req.body.password;
 
-
-    unirest.get("https://wft-geo-db.p.rapidapi.com/v1/geo/cities?countryIds=233")
-    .header("X-RapidAPI-Host", "wft-geo-db.p.rapidapi.com")
-    .header("X-RapidAPI-Key", "5216348952mshebe5b6014a65109p1067e3jsnb192c465fd0c")
-    .end(function (result) {
-        console.log("unirest: "+ result.status, result.headers, result.body);
-    });
-
-    if(req.session.username){
-        console.log(req.session.username + req.session.email + req.session.password);
-        return res.render('account-create-details');
-    } else {
-        return res.render('error', { errmsg: "empty username, please register again" });
-    }
+    return res.render('account-create-details');
 });
 
 // store user info to database
@@ -163,6 +150,7 @@ router.post('/register', (req, res) => {
 // get state by country https://www.npmjs.com/package/countryjs
 router.post('/create/get_state', (req, res)=> {
     var states = country.states(req.body.country_name);
+    // console.log(states);
     if(states) {
         return res.send(states);
     } else {
@@ -171,8 +159,15 @@ router.post('/create/get_state', (req, res)=> {
 });
 
 // get city info
-router.get('/create/get_city', (req, res)=>{
-
+// get city by state https://github.com/khkwan0/countryCityStateJson
+router.post('/create/get_city', (req, res)=>{
+    var cities = countrystatecity.getCities(req.body.country_name,req.body.state_name);
+    // console.log(cities);
+    if(cities) {
+        return res.send(cities);
+    } else {
+        return res.render('error', { errmsg: err });
+    }
 });
 
 

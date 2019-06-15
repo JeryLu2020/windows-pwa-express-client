@@ -16,6 +16,7 @@
     "connect-mongo": "^2.0.3",
     "cookie-parser": "^1.4.0",
     "country-region-dropdown-menu": "^2.1.4",
+    "countrycitystatejson": "^0.2.12",
     "countryjs": "^1.8.0",
     "debug": "^2.2.0",
     "express": "^4.14.0",

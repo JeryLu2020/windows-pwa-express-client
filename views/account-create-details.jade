@@ -20,10 +20,12 @@ block content
                             input#country_selector.form-control(type='text', name='country_name', readonly='true', style="font-size: 12px; background: 000000")
                             input#country_code(type="hidden")
                         .col-4
-                            select#select_state.custom-select.mr-sm-4(name='state_name', style="font-size: 12px")
-                                option(value='State', style='display: block;font-size: 12px') State    
+                            select#state_selector.custom-select.mr-sm-4(name='state_name', style="font-size: 12px")
+                                option(value='State', style='display: block;font-size: 12px') State
                         .col-3.pl-0
-                            input.form-control(type='text', name='city_name', placeholder='City', style="font-size: 12px; background: 000000")   
+                            select#city_selector.custom-select.mr-sm-4(name='city_name', style="font-size: 12px")
+                                option(value='City', style='display: block;font-size: 12px') City
+                                option(value='Others', style='display: block;font-size: 12px') Others
                     .form-group.row
                         .col
                             input.form-control(type='text', name='street_address', placeholder='Address1')
@@ -67,52 +69,114 @@ block content
                 preferredCountries: ['us', 'ca', 'cn']
             });
 
-            $.post('/account/create/get_state', { country_name: "US"}, function(data){
+            $.post('/account/create/get_state', { country_name: "US"}, function(states){
+                if(states){
+                    $('#state_selector').empty();
+                    $.each(states, function(key, value) {
+                        var $option = $("<option/>", {
+                            value: value,
+                            text: value
+                        });
+                        $('#state_selector').append($option);
+                    });
+                }
+            })
+
+            $.post('/account/create/get_city', { country_name: "US", state_name: "Alabama"}, function(data){
                 if(data){
-                    $('#select_state').empty();
+                    $('#city_selector').empty();
                     $.each(data, function(key, value) {
                         var $option = $("<option/>", {
                             value: value,
                             text: value
                         });
-                        $('#select_state').append($option);
+                        $('#city_selector').append($option);
                     });
-
-                } 
+                }
             })
 
+            // get states by country selecter
             var countryData = '';
             $("#country_selector").change(function(){
                 var selectedData = $("#country_selector").countrySelect("getSelectedCountryData");
                 countryData = selectedData.iso2.toUpperCase();
+                //- console.log(countryData);
                 if( countryData ){
-                    $.post('/account/create/get_state', { country_name: countryData}, function(data){
-                        if(data){
-                            $('#select_state').empty();
-                            $.each(data, function(key, value) {
+                    $.post('/account/create/get_state', { country_name: countryData}, function(states){
+                        if(states[0]){
+                            //- console.log(states[0]);
+                            $('#state_selector').empty();
+                            $.each(states, function(key, value) {
                                 var $option = $("<option/>", {
                                     value: value,
                                     text: value
                                 });
-                                $('#select_state').append($option);
-                            });
-
-                        } else {
-                            $('#select_state').empty();
-                            $.each(data, function(key, value) {
-                                var $option = $("<option/>", {
-                                    value: "no record",
-                                    text: "no record"
+                                $('#state_selector').append($option);
+                                
+                                // append city data due to the first state
+                                $.post('/account/create/get_city', { country_name: countryData, state_name: states[0]}, function(cities){
+                                    if(cities[0]){
+                                        //- console.log("cities" + cities);
+                                        $('#city_selector').empty();
+                                        $.each(cities, function(key, value) {
+                                            var $option = $("<option/>", {
+                                                value: value,
+                                                text: value
+                                            });
+                                            $('#city_selector').append($option);
+                                        });
+                                    } else {
+                                        $('#city_selector').empty();
+                                        var $option = $("<option/>", {
+                                            value: $('#state_selector').val(),
+                                            text: $('#state_selector').val()
+                                        });
+                                        $('#city_selector').append($option);
+                                    }
                                 });
-                                $('#select_state').append($option);
+                            });
+                        } else {
+                            $('#state_selector').empty();
+                            $.each(states, function(key, value) {
+                                var $option = $("<option/>", {
+                                    value: $('#country_selector').val(),
+                                    text: $('#country_selector').val()
+                                });
+                                $('#state_selector').append($option);
                             });
                         }
                     })
                 }
             });
 
-            $('#select_state').change(function(){
-                console.log($('#select_state').val());
+            $('#state_selector').change(function(){
+                console.log($('#state_selector').val());
+                // get cities by state
+                $('#city_selector').empty();
+                $.post('/account/create/get_city', { country_name: countryData, state_name: $('#state_selector').val()}, function(cities){
+                    if(cities[0]){
+                        //- console.log("cities" + cities);
+                        $('#city_selector').empty();
+                        $.each(cities, function(key, value) {
+                            var $option = $("<option/>", {
+                                value: value,
+                                text: value
+                            });
+                            $('#city_selector').append($option);
+                        });
+                    } else {
+                        var $option = $("<option/>", {
+                            value: $('#state_selector').val(),
+                            text: $('#state_selector').val()
+                        });
+                        $('#city_selector').append($option);
+                    }
+                })
+            });
+
+            $('#city_selector').change(function(){
+                console.log($('#country_selector').val());
+                console.log($('#city_selector').val());
             });
             
         })
@@ -123,4 +187,4 @@ block content
 
 //-  https://github.com/mrmarkfrench/country-select-js
 //- country code https://github.com/RudeySH/SteamCountries/tree/master/json
-//- mongoimport.exe -h jerytest.documents.azure.com:10255 -u jerytest -p IZ8nYAVROPoQL8kSalbtMwsAhBK8oKft7IdNMm6NFXHrPwinNVmxrGsmURfSD8N5yxFemsMRtIxX5DWG6epJ1A== --ssl --sslAllowInvalidCertificates --db React --collection state_cities <  c:\Users\59131\Desktop\windows-pwa-express-client\public\resources\states-cities.json
+//- mongoimport.exe -h jerytest.documents.azure.com:10255 -u jerytest -p password --ssl --sslAllowInvalidCertificates --db React --collection state_cities <  c:\Users\59131\Desktop\windows-pwa-express-client\public\resources\states-cities.json
