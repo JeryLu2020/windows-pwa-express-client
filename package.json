@@ -19,6 +19,7 @@
     "countrycitystatejson": "^0.2.12",
     "countryjs": "^1.8.0",
     "debug": "^2.2.0",
+    "dotenv": "^8.0.0",
     "express": "^4.14.0",
     "express-session": "^1.16.1",
     "jade": "^1.11.0",
@@ -27,6 +28,7 @@
     "morgan": "^1.7.0",
     "pug": "^2.0.0-beta6",
     "request": "^2.88.0",
+    "sendgrid": "^5.2.3",
     "serve-favicon": "^2.3.0",
     "unirest": "^0.6.0",
     "web-push": "^3.3.3"

@@ -1,7 +1,11 @@
 var express = require('express');
 var router = express.Router();
+require('dotenv').config();
 var country = require('countryjs');
-var unirest = require('unirest');
+// var unirest = require('unirest');
+const sendGrid = require('sendgrid').mail;
+const sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
+
 var countrystatecity= require('countrycitystatejson')
 
 const Hero = require('../config/database');
@@ -136,6 +140,7 @@ router.post('/register', (req, res) => {
         username: req.session.username || 'Undefined',
         password: req.session.password || '',
         email: req.session.email || 'Undefined',
+        emailValid: false
     });
 
     hero.save()
@@ -175,8 +180,9 @@ router.post('/create/get_city', (req, res)=>{
 
 // email verification page
 router.get('/create/email', (req,res)=>{
+    email = (req.session.email != null)? req.session.email : " ";
     //if(req.session.email != null && req.session.email != 'undefined' ){
-        res.render('account-email', { email: req.session.email });
+        res.render('account-email', { email: email });
     // } else {
     //    return res.render('error', { errmsg: "please go back and registry with a valid email" });
     // }
@@ -188,41 +194,65 @@ router.post('/create/verifyEmail', (req,res)=>{
     var verficationCode = Math.floor(100000 + Math.random() * 900000);
 
     var eamilAddress = (req.body.email_address);
-    unirest.post("https://rapidprod-sendgrid-v1.p.rapidapi.com/mail/send")
-    .header("X-RapidAPI-Host", "rapidprod-sendgrid-v1.p.rapidapi.com")
-    .header("X-RapidAPI-Key", "5216348952mshebe5b6014a65109p1067e3jsnb192c465fd0c")
-    .header("Content-Type", "application/json")
-    .send(
-    {
-        "personalizations":[{
-            "to":[{"email":eamilAddress}],
-            "subject":"Verify your email!",
-            "subsubstitutions": {
-                "-name-": verficationCode
-            }
-        }],
-    "from":{"email":"mail@express.com"},
-    "reply_to":{"email":"mail@express.com"},
-    "subject":"Verify your email!",
-    "content":[{
-            "type": "text/plain",
-            "value": "Hello -name-,"
-        },{
-            "type": "text/html",
-            "value": "Hello -name-,"
-        }]
-    })
-    .end(function (result) {
-        console.log(result.status);
-        // console.log(result.headers);
-        // console.log(result.body);
-        if(result.status == 202 || result.status == 200){
-            res.render('account-email-success', { email: eamilAddress });
-        } else {
+
+    const request = sg.emptyRequest({
+        method: "POST",
+        path: "/v3/mail/send",
+        body: {
+            personalizations: [{
+                to: [{
+                        email: eamilAddress
+                    }],
+                    subject:"Verify Your Email"
+                }],
+                from: {
+                    email: "mail@express.com"
+                },
+                content: [
+                {
+                    type: 'text/plain',
+                    value: `Hello, your verification code is ${verficationCode}`
+                }]
+        }
+    });
+    sg.API(request, function (error, response) {
+        if (error) {
             return res.render('error', { errmsg: "please go back and try again" });
+        }
+        else {
+            console.log(response.statusCode);
+            req.session.verficationCode = verficationCode;
+            res.render('account-email-success', { email: eamilAddress, verficationCode: req.session.verficationCode });
         }
     });
 });
+
+// verify email authentication pingcode
+router.post('/create/verifyEmail/verficationCode', (req,res)=>{
+    if(req.session.verficationCode == req.body.verficationcode){
+        console.log(req.session.verficationCode);
+        Hero.updateOne( { email : req.session.email }, { 
+            $set: {
+                emailValid: true
+            },
+            
+        }, {upsert: true})
+        .then(data => {
+            if(!data){
+                console.log('update emailValid status failed');
+                return res.render('error', { errmsg: "please try again" });
+            }
+            console.log('update emailValid status success');
+            res.redirect('/account');
+        })
+        .catch(err=>{
+            return res.render('error', { errmsg: "error, please try again" });
+        });
+    } else {
+        return res.render('error', { errmsg: "please try again..." });
+    }
+});
+
 
 // user logout
 router.get('/logout', (req, res)=>{

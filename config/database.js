@@ -1,12 +1,13 @@
 //Import the mongoose module
 var mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+require('dotenv').config();
 
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 
 //Set up default mongoose connection
-var mongoDBurl = 'mongodb://jerytest:IZ8nYAVROPoQL8kSalbtMwsAhBK8oKft7IdNMm6NFXHrPwinNVmxrGsmURfSD8N5yxFemsMRtIxX5DWG6epJ1A==@jerytest.documents.azure.com:10255/React?ssl=true&replicaSet=globaldb';
+var mongoDBurl = process.env.MONGODB_CONNECTION;
 mongoose.connect(mongoDBurl, { useNewUrlParser: true });
 
 //Get the default connection

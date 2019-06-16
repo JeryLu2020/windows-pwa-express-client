@@ -6,9 +6,18 @@ block content
     .container
         .row.d-flex.justify-content-center
             .jumbotron.text-center.bg-white.shadow.rounded.mt-5(style="width:400px")
-                h4.mt-3 Verification code sent successfully
-                p.mt-4.small please check your email address #{email}
-                a.btn.btn-success.btn-lg.btn-block.mt-5.text-light(href='/', role='button', style="font-size: 15px") Login In
+                h5.mt-3.ml-0 Verification code sent successful !!
+                p.mt-4.small.ml-0 Please check your email at #{email} #{verficationCode}
+                h5.mt-5.ml-0.font-weight-light Type in the code: 
+                form(action='/account/create/verifyEmail/verficationCode', method='POST', id="verfication-code")
+                    .form-group.row
+                        .col-sm
+                            input#verifycode.form-control(type='text', name='verficationcode', placeholder='Verfication Code')
+                            #feedbackcode 
+                        //- .col-2.mt-4
+                        //-     a.btn.btn-outline-success.btn-sm(role='button') Resend
+                    .form-group.row
+                    a#loginbutton.btn.btn-success.btn-lg.btn-block.mt-5.text-light( type='button', style="font-size: 15px", onclick="document.getElementById('verfication-code').submit();") Login In
 
     style.
         .form-group input{
@@ -24,3 +33,24 @@ block content
         .form-group input:focus{
             border-bottom: 2px solid green;
         }
+        .text-center {
+            text-align: left!important;
+        }
+
+    script.
+        $(document).ready( function() {
+            $("#verifycode").keyup(function(){
+                var code = $("#verifycode").val();
+                if(code == '#{verficationCode}'){
+                    $("#verifycode").removeClass("is-invalid").addClass("is-valid");
+                    $("#feedbackcode").removeClass("invalid-feedback").addClass("valid-feedback");
+                    $("#feedbackcode").html("valid verification code!");
+                    //- $('loginbutton').removeClass("disabled").addClass("active");
+                } else {
+                    $("#verifycode").removeClass("is-valid").addClass("is-invalid");
+                    $("#feedbackcode").removeClass("ivalid-feedback").addClass("invalid-feedback");
+                    $("#feedbackcode").html("invalid verification code!");
+                    //- $('loginbutton').removeClass("active").addClass("disabled");
+                }
+            })
+        })
