@@ -230,7 +230,7 @@ router.post('/create/verifyEmail', (req,res)=>{
 // verify email authentication pingcode
 router.post('/create/verifyEmail/verficationCode', (req,res)=>{
     if(req.session.verficationCode == req.body.verficationcode){
-        console.log(req.session.verficationCode);
+        // console.log(req.session.verficationCode);
         Hero.updateOne( { email : req.session.email }, { 
             $set: {
                 emailValid: true
