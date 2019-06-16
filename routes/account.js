@@ -175,28 +175,43 @@ router.post('/create/get_city', (req, res)=>{
 
 // email verification page
 router.get('/create/email', (req,res)=>{
-    res.render('account-email', { email: req.session.email });
+    //if(req.session.email != null && req.session.email != 'undefined' ){
+        res.render('account-email', { email: req.session.email });
+    // } else {
+    //    return res.render('error', { errmsg: "please go back and registry with a valid email" });
+    // }
 });
 
 // email sent result page
 router.post('/create/verifyEmail', (req,res)=>{
+    // generate 6 verfication code
+    var verficationCode = Math.floor(100000 + Math.random() * 900000);
+
     var eamilAddress = (req.body.email_address);
     unirest.post("https://rapidprod-sendgrid-v1.p.rapidapi.com/mail/send")
     .header("X-RapidAPI-Host", "rapidprod-sendgrid-v1.p.rapidapi.com")
     .header("X-RapidAPI-Key", "5216348952mshebe5b6014a65109p1067e3jsnb192c465fd0c")
     .header("Content-Type", "application/json")
-    .send({"personalizations":
-    [
-        {
+    .send(
+    {
+        "personalizations":[{
             "to":[{"email":eamilAddress}],
-            "subject":"Hello, World!"
-        }
-    ],
-    "from":{"email":"from_address@example.com"},
-    "content":
-    [
-        {"type":"text/plain","value":"Hello, World!"}
-    ]})
+            "subject":"Verify your email!",
+            "subsubstitutions": {
+                "-name-": verficationCode
+            }
+        }],
+    "from":{"email":"mail@express.com"},
+    "reply_to":{"email":"mail@express.com"},
+    "subject":"Verify your email!",
+    "content":[{
+            "type": "text/plain",
+            "value": "Hello -name-,"
+        },{
+            "type": "text/html",
+            "value": "Hello -name-,"
+        }]
+    })
     .end(function (result) {
         console.log(result.status);
         // console.log(result.headers);

@@ -65,7 +65,7 @@ block content
                     if(data=='ok'){
                         $("#validatename").removeClass("is-invalid").addClass("is-valid");
                         $("#feedbackname").removeClass("invalid-feedback").addClass("valid-feedback");
-                        //- $("#feedbackname").html("username is valid");
+                        $("#feedbackname").html("");
                     } else if( data=='no'){
                         $("#validatename").removeClass("is-valid").addClass("is-invalid");
                         $("#feedbackname").removeClass("valid-feedback").addClass("invalid-feedback");
@@ -80,7 +80,7 @@ block content
             if( password == val){
                 $("#validatepassword").removeClass("is-invalid").addClass("is-valid");
                 $("#feedbackvalidate").removeClass("invalid-feedback").addClass("valid-feedback");
-                //- $("#feedbackvalidate").html("passowrd is valid");
+                $("#feedbackvalidate").html("");
             } else {
                 $("#validatepassword").removeClass("is-valid").addClass("is-invalid");
                 $("#feedbackvalidate").removeClass("valid-feedback").addClass("invalid-feedback");
@@ -94,7 +94,7 @@ block content
                 if(isEmail(email)){
                     $("#emailvalidate").removeClass("is-invalid").addClass("is-valid");
                     $("#feedbackemail").removeClass("invalid-feedback").addClass("valid-feedback");
-                    //- $("#feedbackemail").html("email is valid");
+                    $("#feedbackemail").html("");
                 } else {
                     $("#emailvalidate").removeClass("is-valid").addClass("is-invalid");
                     $("#feedbackemail").removeClass("ivalid-feedback").addClass("invalid-feedback");

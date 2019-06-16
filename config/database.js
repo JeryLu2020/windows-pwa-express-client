@@ -52,6 +52,7 @@ const heroSchema = new Schema({
             type: String,
             required: true,
         },
+        emailValid: Boolean,
         
         // user login activities
         heroactivitylog: [{
