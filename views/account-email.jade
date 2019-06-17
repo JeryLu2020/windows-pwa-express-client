@@ -10,7 +10,7 @@ block content
                 form(action='/account/create/verifyEmail', method='POST', id='verify-email')
                     .form-group.row.mt-4
                         .col-sm
-                            input#emailvalidate.mt-3.form-control(type='text', placeholder='Email address', name='email_address', onblur="checkEmail(this.value)")
+                            input#emailvalidate.mt-3.form-control(type='text', placeholder='Email address', value='#{email}' name='email_address', onblur="checkEmail(this.value)")
                             #feedbackemail
                 p.mt-4.small To confirm this is your email address, please tap the button below to receive a verification code.
                 a.btn.btn-success.btn-lg.btn-block.mt-5.text-light(role='button', style="font-size: 15px", onclick="document.getElementById('verify-email').submit();") Send me a verification code
@@ -40,7 +40,7 @@ block content
                     $("#feedbackemail").html("");
                 } else {
                     $("#emailvalidate").removeClass("is-valid").addClass("is-invalid");
-                    $("#feedbackemail").removeClass("ivalid-feedback").addClass("invalid-feedback");
+                    $("#feedbackemail").removeClass("valid-feedback").addClass("invalid-feedback");
                     $("#feedbackemail").html("invalid email format");
                 }
             }

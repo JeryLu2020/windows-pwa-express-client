@@ -97,8 +97,8 @@ router.get('/create', (req,res)=>{
 });
 
 // check whether username is already taken
-router.post('/checkname', (req, res)=> {
-     Hero.findOne({ username: req.body.username})
+router.post('/checkemail', (req, res)=> {
+     Hero.findOne({ email: req.body.email})
         .then(data=>{
             if(!data){
                 return res.send("ok");
@@ -112,14 +112,13 @@ router.post('/checkname', (req, res)=> {
 
 // user create detail page
 router.post('/create/details', (req,res)=>{
-    req.session.username = req.body.username;
-    req.session.email = req.body.email;
-    req.session.password = req.body.password;
-
-    if(req.body.username){
+    if(req.body.email && req.body.password){
+        // req.session.username = req.body.username;
+        req.session.email = req.body.email;
+        req.session.password = req.body.password;
         return res.render('account-create-details');
     } else{
-        return res.render('error', { errmsg: "please fill in register form first" });
+        return res.render('error', { errmsg: "please fill in email address and passowrd" });
     }
 });
 
@@ -137,7 +136,7 @@ router.post('/register', (req, res) => {
         state_name: req.body.state_name || 'N/A',
         city_name: req.body.city_name || 'N/A',
         
-        username: req.session.username || 'Undefined',
+        // username: req.session.username || 'Undefined',
         password: req.session.password || '',
         email: req.session.email || 'Undefined',
         emailValid: false
@@ -145,6 +144,7 @@ router.post('/register', (req, res) => {
 
     hero.save()
         .then(data=>{
+            req.session.userId = data._id;
             return res.redirect('/account/create/email');
         })
         .catch(err =>{
@@ -231,19 +231,18 @@ router.post('/create/verifyEmail', (req,res)=>{
 router.post('/create/verifyEmail/verficationCode', (req,res)=>{
     if(req.session.verficationCode == req.body.verficationcode){
         // console.log(req.session.verficationCode);
-        Hero.updateOne( { email : req.session.email }, { 
-            $set: {
-                emailValid: true
-            },
-            
-        }, {upsert: true})
+        console.log(req.session.userId);
+        var userId = req.session.userId;
+        Hero.findByIdAndUpdate( userId , {
+            emailValid: true,
+        }, {new: true})
         .then(data => {
             if(!data){
                 console.log('update emailValid status failed');
-                return res.render('error', { errmsg: "please try again" });
+                return res.render('error', { errmsg: "update emailValid status failed, please try again" });
             }
             console.log('update emailValid status success');
-            res.redirect('/account');
+            res.render('account-email-verify-success', { email : req.session.email})
         })
         .catch(err=>{
             return res.render('error', { errmsg: "error, please try again" });

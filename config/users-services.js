@@ -16,7 +16,7 @@ exports.update = (req, res) => {
         payment_card: req.body.payment_card || 'N/A',
         day_of_birth: req.body.day_of_birth || '',
         
-        username: req.body.username || 'Undefined',
+        // username: req.body.username || 'Undefined',
         password: req.body.password || '',
         email: req.body.email || 'Undefined',
     }, {new: true})

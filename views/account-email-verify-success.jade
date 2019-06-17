@@ -1,0 +1,16 @@
+extends layout
+
+head
+
+block content
+    .container
+        .row.d-flex.justify-content-center
+            .jumbotron.text-center.bg-white.shadow.rounded.mt-5(style="width:400px")
+                h5.mt-3.ml-0 
+                    | Congratulations!!
+                    br
+                    | Email is successfully verified !!
+                h5.mt-5.ml-0.font-weight-light #{email}
+                form(action='/', method='')
+                    .form-group.row
+                    a#loginbutton.btn.btn-success.btn-lg.btn-block.mt-5.text-light(href='/account', style="font-size: 15px") Sign In Now

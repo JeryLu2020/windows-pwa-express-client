@@ -10,7 +10,8 @@ block content
                 form(action='/account/login', method="POST", id="account-login")
                     .form-group.row.mt-4
                         .col-sm
-                            input.mt-3.form-control(type='text', name="email", placeholder='Email address')
+                            input#emailvalidate.mt-3.form-control(type='text', name="email", placeholder='Email address', onblur="checkEmail(this.value)")
+                            #feedbackemail
                 a.btn.btn-success.btn-lg.btn-block.mt-4.text-white(role='button', style="font-size: 15px", onclick="document.getElementById('account-login').submit()") Next
                 .form-check.mt-4.float-left
                     input#exampleCheck1.form-check-input.align-center(type='checkbox',style="display: center;")
@@ -33,4 +34,33 @@ block content
         }
         .form-group input:focus{
             border-bottom: 2px solid green;
+        }
+    
+    script.
+        function checkEmail(val) {
+            var email = $('#emailvalidate').val();
+            if(email != null){
+                if(isEmail(email)){
+                    $.post('/account/checkemail', { email: val}, function(data){
+                        if(data=='ok'){
+                            $("#emailvalidate").removeClass("is-invalid").addClass("is-valid");
+                            $("#feedbackemail").removeClass("invalid-feedback").addClass("valid-feedback");
+                            $("#feedbackemail").html("");
+                        } else if( data=='no'){
+                            $("#emailvalidate").removeClass("is-valid").addClass("is-invalid");
+                            $("#feedbackemail").removeClass("ivalid-feedback").addClass("invalid-feedback");
+                            $("#feedbackemail").html("Email already exist! Please change");
+                        }
+                    })
+                } else {
+                    $("#emailvalidate").removeClass("is-valid").addClass("is-invalid");
+                    $("#feedbackemail").removeClass("ivalid-feedback").addClass("invalid-feedback");
+                    $("#feedbackemail").html("invalid email format");
+                }
+            }
+        }
+
+        function isEmail(email) {
+            var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            return regex.test(email);
         }

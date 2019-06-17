@@ -6,12 +6,12 @@ block content
     .container
         .row.d-flex.justify-content-center
             .jumbotron.text-center.bg-white.shadow.rounded.mt-5(style="width:400px")
-                h5.mt-3 Sing up
+                h5.mt-3 Sign up
                 form(action='/account/create/details', method='POST', id='user-create')
                     .form-group.row.mt-4
-                        .col-sm
-                            input#validatename.form-control(type='text', name='username', placeholder='Username', onblur="checkName(this.value)")
-                            #feedbackname
+                        //- .col-sm
+                        //-     input#validatename.form-control(type='text', name='username', placeholder='Username', onblur="checkName(this.value)")
+                        //-     #feedbackname
                     .form-group.row
                         .col-sm
                             input#emailvalidate.form-control(type='text', name='email', placeholder='Email Address', onblur="checkEmail(this.value)")
@@ -57,44 +57,52 @@ block content
         }
 
     script.
-        function checkName(val) {
-            if(!(val.match(/^\S+$/))) {
-                console.log("username is required");
-            } else {
-                $.post('/account/checkname', { username: val}, function(data){
-                    if(data=='ok'){
-                        $("#validatename").removeClass("is-invalid").addClass("is-valid");
-                        $("#feedbackname").removeClass("invalid-feedback").addClass("valid-feedback");
-                        $("#feedbackname").html("");
-                    } else if( data=='no'){
-                        $("#validatename").removeClass("is-valid").addClass("is-invalid");
-                        $("#feedbackname").removeClass("valid-feedback").addClass("invalid-feedback");
-                        $("#feedbackname").html("username already exist");
-                    }
-                })
-            }
-        }
+        //- function checkName(val) {
+        //-     if(!(val.match(/^\S+$/))) {
+        //-         //- console.log("email is required");
+        //-     } else {
+        //-         $.post('/account/checkemail', { email: val}, function(data){
+        //-             if(data=='ok'){
+        //-                 $("#validatename").removeClass("is-invalid").addClass("is-valid");
+        //-                 $("#feedbackname").removeClass("invalid-feedback").addClass("valid-feedback");
+        //-                 $("#feedbackname").html("");
+        //-             } else if( data=='no'){
+        //-                 $("#validatename").removeClass("is-valid").addClass("is-invalid");
+        //-                 $("#feedbackname").removeClass("valid-feedback").addClass("invalid-feedback");
+        //-                 $("#feedbackname").html("username already exist");
+        //-             }
+        //-         })
+        //-     }
+        //- }
 
-        function checkPassword(val) {
-            var password = $("#originpassword").val();
-            if( password == val){
-                $("#validatepassword").removeClass("is-invalid").addClass("is-valid");
-                $("#feedbackvalidate").removeClass("invalid-feedback").addClass("valid-feedback");
-                $("#feedbackvalidate").html("");
-            } else {
-                $("#validatepassword").removeClass("is-valid").addClass("is-invalid");
-                $("#feedbackvalidate").removeClass("valid-feedback").addClass("invalid-feedback");
-                $("#feedbackvalidate").html("passowrd doesn't match!!");
-            }
-        }
+        //- function checkPassword(val) {
+        //-     var password = $("#originpassword").val();
+        //-     if( password == val){
+        //-         $("#validatepassword").removeClass("is-invalid").addClass("is-valid");
+        //-         $("#feedbackvalidate").removeClass("invalid-feedback").addClass("valid-feedback");
+        //-         $("#feedbackvalidate").html("");
+        //-     } else {
+        //-         $("#validatepassword").removeClass("is-valid").addClass("is-invalid");
+        //-         $("#feedbackvalidate").removeClass("valid-feedback").addClass("invalid-feedback");
+        //-         $("#feedbackvalidate").html("passowrd doesn't match!!");
+        //-     }
+        //- }
 
         function checkEmail(val) {
             var email = $('#emailvalidate').val();
             if(email != null){
                 if(isEmail(email)){
-                    $("#emailvalidate").removeClass("is-invalid").addClass("is-valid");
-                    $("#feedbackemail").removeClass("invalid-feedback").addClass("valid-feedback");
-                    $("#feedbackemail").html("");
+                    $.post('/account/checkemail', { email: val}, function(data){
+                        if(data=='ok'){
+                            $("#emailvalidate").removeClass("is-invalid").addClass("is-valid");
+                            $("#feedbackemail").removeClass("invalid-feedback").addClass("valid-feedback");
+                            $("#feedbackemail").html("");
+                        } else if( data=='no'){
+                            $("#emailvalidate").removeClass("is-valid").addClass("is-invalid");
+                            $("#feedbackemail").removeClass("ivalid-feedback").addClass("invalid-feedback");
+                            $("#feedbackemail").html("Email already exist! Please login");
+                        }
+                    })
                 } else {
                     $("#emailvalidate").removeClass("is-valid").addClass("is-invalid");
                     $("#feedbackemail").removeClass("ivalid-feedback").addClass("invalid-feedback");
