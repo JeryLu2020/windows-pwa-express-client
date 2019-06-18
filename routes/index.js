@@ -12,7 +12,7 @@ router.get('/', function (req, res) {
                     return res.render('error', { errmsg: err });
                 }
                 console.log('findOne success');
-                return res.render('index', { layout: 'layout', title: 'VIP', userprofiler : data.username});
+                return res.render('index', { layout: 'layout', title: 'VIP', userprofiler : data.email});
             })
             .catch(err=>{
                 if(err.kind === 'ObjectId'){

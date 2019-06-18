@@ -6,7 +6,7 @@ block content
     .container
         .row.d-flex.justify-content-center
             .jumbotron.text-center.bg-white.shadow.rounded.mt-5(style="width:400px")
-                h5.mt-3 Login In
+                h5.mt-3 Sign In
                 form(action='/account/login/success', method='POST', id='user-login-success')
                     .form-group.row.mt-4
                         .col-sm
@@ -14,7 +14,7 @@ block content
                     .form-group.row
                         .col-sm
                             input#emailvalidate.form-control(type='password', name='password', placeholder='Password')
-                a.btn.btn-success.btn-lg.btn-block.mt-5.text-white(role='button', style="font-size: 15px", onclick="document.getElementById('user-login-success').submit();") Continue
+                a.btn.btn-success.btn-lg.btn-block.mt-5.text-white(role='button', style="font-size: 15px", onclick="document.getElementById('user-login-success').submit();") Sign In
             
     style.
         .form-group input{

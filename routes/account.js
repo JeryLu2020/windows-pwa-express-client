@@ -22,10 +22,10 @@ router.get('/login', (req, res)=>{
 // user login
 router.post('/login', (req, res)=>{
     var email = req.body.email;
-    if(email != null){
+    if(email != null && email != ''){
         return res.render('account-login', { email : email });
     } else {
-        return res.redirect('/account/login');
+        return res.render('error', { errmsg: "Please input your email address" });
     }
 });
 

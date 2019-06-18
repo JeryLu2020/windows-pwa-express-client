@@ -6,13 +6,13 @@ block content
     .container
         .row.d-flex.justify-content-center
             .jumbotron.text-center.bg-white.shadow.rounded.mt-5(style="width:400px")
-                h5.mt-3 Sign in
+                h5.mt-3 Sign In
                 form(action='/account/login', method="POST", id="account-login")
                     .form-group.row.mt-4
                         .col-sm
-                            input#emailvalidate.mt-3.form-control(type='text', name="email", placeholder='Email address', onblur="checkEmail(this.value)")
+                            input#emailvalidate.mt-3.form-control(type='text', name="email", placeholder='Email address')
                             #feedbackemail
-                a.btn.btn-success.btn-lg.btn-block.mt-4.text-white(role='button', style="font-size: 15px", onclick="document.getElementById('account-login').submit()") Next
+                button#nextbutton.btn.btn-success.btn-lg.btn-block.mt-4.text-white(role='button', style="font-size: 15px", onclick="document.getElementById('account-login').submit()") Next
                 .form-check.mt-4.float-left
                     input#exampleCheck1.form-check-input.align-center(type='checkbox',style="display: center;")
                     label.align-middle(for='exampleCheck1', style="font-size: 12px; margin-top: 0") stay signed in
@@ -37,28 +37,39 @@ block content
         }
     
     script.
-        function checkEmail(val) {
-            var email = $('#emailvalidate').val();
-            if(email != null){
-                if(isEmail(email)){
-                    $.post('/account/checkemail', { email: val}, function(data){
-                        if(data=='ok'){
-                            $("#emailvalidate").removeClass("is-invalid").addClass("is-valid");
-                            $("#feedbackemail").removeClass("invalid-feedback").addClass("valid-feedback");
-                            $("#feedbackemail").html("");
-                        } else if( data=='no'){
-                            $("#emailvalidate").removeClass("is-valid").addClass("is-invalid");
-                            $("#feedbackemail").removeClass("ivalid-feedback").addClass("invalid-feedback");
-                            $("#feedbackemail").html("Email already exist! Please change");
-                        }
-                    })
+        $(document).ready(function(){
+            $('#emailvalidate').keyup(function() {
+                var email = $('#emailvalidate').val();
+                if(email != null && email != ''){
+                    if(isEmail(email)){
+                        $.post('/account/checkemail', { email: email}, function(data){
+                            if(data=='no'){
+                                $("#emailvalidate").removeClass("is-invalid").addClass("is-valid");
+                                $("#feedbackemail").removeClass("invalid-feedback").addClass("valid-feedback");
+                                $("#feedbackemail").html("");
+                                $('#nextbutton').prop('disabled', false);
+                            } else if( data=='ok'){
+                                $("#emailvalidate").removeClass("is-valid").addClass("is-invalid");
+                                $("#feedbackemail").removeClass("ivalid-feedback").addClass("invalid-feedback");
+                                $("#feedbackemail").html("Email not found! Please create account first");
+                                $('#nextbutton').prop('disabled', true);
+                            }
+                        })
+                    } else {
+                        $("#emailvalidate").removeClass("is-valid").addClass("is-invalid");
+                        $("#feedbackemail").removeClass("ivalid-feedback").addClass("invalid-feedback");
+                        $("#feedbackemail").html("invalid email format");
+                        $('#nextbutton').prop('disabled', true);
+                    }
                 } else {
-                    $("#emailvalidate").removeClass("is-valid").addClass("is-invalid");
-                    $("#feedbackemail").removeClass("ivalid-feedback").addClass("invalid-feedback");
-                    $("#feedbackemail").html("invalid email format");
+                    $('#nextbutton').prop('disabled', true);
                 }
-            }
-        }
+            }).focus(function() {
+                $('#feedbackemail').removeClass('d-none').addClass('d-block');
+            }).blur(function() {
+                //- $('#feedbackemail').removeClass('d-block').addClass('d-none');
+            })
+        })
 
         function isEmail(email) {
             var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;

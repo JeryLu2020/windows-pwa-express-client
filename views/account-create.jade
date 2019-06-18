@@ -14,7 +14,7 @@ block content
                         //-     #feedbackname
                     .form-group.row
                         .col-sm
-                            input#emailvalidate.form-control(type='text', name='email', placeholder='Email Address', onblur="checkEmail(this.value)")
+                            input#emailvalidate.form-control(type='text', name='email', placeholder='Email Address')
                             #feedbackemail
                     .form-group.row
                         .col-sm
@@ -25,9 +25,9 @@ block content
                             #passwordupper.d-none.invalid-feedback At least one capital letter
                     .form-group.row
                         .col-sm
-                            input#validatepassword.form-control(type='password', name='', placeholder='Confirm Password', onblur="checkPassword(this.value)")
+                            input#validatepassword.form-control(type='password', name='', placeholder='Confirm Password')
                             #feedbackvalidate
-                a.btn.btn-success.btn-lg.btn-block.mt-5.text-white(role='button', style="font-size: 15px", onclick="document.getElementById('user-create').submit();") Continue
+                button#coutinuebutton.btn.btn-success.btn-lg.btn-block.mt-5.text-white(role='button', style="font-size: 15px", onclick="document.getElementById('user-create').submit();") Continue
             
     style.
         .form-group input{
@@ -57,65 +57,6 @@ block content
         }
 
     script.
-        //- function checkName(val) {
-        //-     if(!(val.match(/^\S+$/))) {
-        //-         //- console.log("email is required");
-        //-     } else {
-        //-         $.post('/account/checkemail', { email: val}, function(data){
-        //-             if(data=='ok'){
-        //-                 $("#validatename").removeClass("is-invalid").addClass("is-valid");
-        //-                 $("#feedbackname").removeClass("invalid-feedback").addClass("valid-feedback");
-        //-                 $("#feedbackname").html("");
-        //-             } else if( data=='no'){
-        //-                 $("#validatename").removeClass("is-valid").addClass("is-invalid");
-        //-                 $("#feedbackname").removeClass("valid-feedback").addClass("invalid-feedback");
-        //-                 $("#feedbackname").html("username already exist");
-        //-             }
-        //-         })
-        //-     }
-        //- }
-
-        //- function checkPassword(val) {
-        //-     var password = $("#originpassword").val();
-        //-     if( password == val){
-        //-         $("#validatepassword").removeClass("is-invalid").addClass("is-valid");
-        //-         $("#feedbackvalidate").removeClass("invalid-feedback").addClass("valid-feedback");
-        //-         $("#feedbackvalidate").html("");
-        //-     } else {
-        //-         $("#validatepassword").removeClass("is-valid").addClass("is-invalid");
-        //-         $("#feedbackvalidate").removeClass("valid-feedback").addClass("invalid-feedback");
-        //-         $("#feedbackvalidate").html("passowrd doesn't match!!");
-        //-     }
-        //- }
-
-        function checkEmail(val) {
-            var email = $('#emailvalidate').val();
-            if(email != null){
-                if(isEmail(email)){
-                    $.post('/account/checkemail', { email: val}, function(data){
-                        if(data=='ok'){
-                            $("#emailvalidate").removeClass("is-invalid").addClass("is-valid");
-                            $("#feedbackemail").removeClass("invalid-feedback").addClass("valid-feedback");
-                            $("#feedbackemail").html("");
-                        } else if( data=='no'){
-                            $("#emailvalidate").removeClass("is-valid").addClass("is-invalid");
-                            $("#feedbackemail").removeClass("ivalid-feedback").addClass("invalid-feedback");
-                            $("#feedbackemail").html("Email already exist! Please login");
-                        }
-                    })
-                } else {
-                    $("#emailvalidate").removeClass("is-valid").addClass("is-invalid");
-                    $("#feedbackemail").removeClass("ivalid-feedback").addClass("invalid-feedback");
-                    $("#feedbackemail").html("invalid email format");
-                }
-            }
-        }
-
-        function isEmail(email) {
-            var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-            return regex.test(email);
-        }
-
         $(document).ready(function() {
             //login and logout button
             if('#{loggedIn}'){
@@ -127,6 +68,44 @@ block content
                 $('#loginbuttom').removeClass('d-none').addClass('d-block');
                 $('#logoutbuttom').removeClass('d-block').addClass('d-none');
             }
+
+            //validate email
+            $('#emailvalidate').keyup(function() {
+                var email = $('#emailvalidate').val();
+                if(email != null){
+                    if(isEmail(email)){
+                        $.post('/account/checkemail', { email: email}, function(data){
+                            if(data=='ok'){
+                                $("#emailvalidate").removeClass("is-invalid").addClass("is-valid");
+                                $("#feedbackemail").removeClass("invalid-feedback").addClass("valid-feedback");
+                                $("#feedbackemail").html("");
+                                //- $('#coutinuebutton').prop('disabled', false);
+                            } else if( data=='no'){
+                                $("#emailvalidate").removeClass("is-valid").addClass("is-invalid");
+                                $("#feedbackemail").removeClass("ivalid-feedback").addClass("invalid-feedback");
+                                $("#feedbackemail").html("Email already exist! Please Sign In");
+                                $('#coutinuebutton').prop('disabled', true);
+                            }
+                        })
+                    } else {
+                        $("#emailvalidate").removeClass("is-valid").addClass("is-invalid");
+                        $("#feedbackemail").removeClass("ivalid-feedback").addClass("invalid-feedback");
+                        $("#feedbackemail").html("invalid email format");
+                        $('#coutinuebutton').prop('disabled', true);
+                    }
+                } else {
+                    $('#nextbutton').prop('disabled', true);
+                }
+            }).focus(function() {
+                $('#feedbackemail').removeClass('d-none').addClass('d-block');
+            }).blur(function() {
+                //- $('#feedbackemail').removeClass('d-block').addClass('d-none');
+            })
+            function isEmail(email) {
+                var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+                return regex.test(email);
+            }
+
     
             // password strengthen
             $('#originpassword').keyup(function() {
@@ -134,38 +113,48 @@ block content
                 // is-validate length
                 if(val.length >= 8) {
                     $('#passwordlength').removeClass('invalid-feedback').addClass('valid-feedback');
+                    //- $('#coutinuebutton').prop('disabled', false);
                 } else {
                     $('#passwordlength').removeClass('valid-feedback').addClass('invalid-feedback');     
+                    $('#coutinuebutton').prop('disabled', true);
                 }
 
                 // is-validate numbers
                 var numbers = /[0-9]/g;
                 if(val.match(numbers)) {  
                     $('#passwordnumber').removeClass('invalid-feedback').addClass('valid-feedback');
+                    //- $('#coutinuebutton').prop('disabled', false);
                 } else {
                     $('#passwordnumber').removeClass('valid-feedback').addClass('invalid-feedback');
+                    $('#coutinuebutton').prop('disabled', true);
                 }
 
                 // is-validate lowercase letters
                 var lowerCaseLetters = /[a-z]/g;
                 if(val.match(lowerCaseLetters)) {  
                     $('#passwordlower').removeClass('invalid-feedback').addClass('valid-feedback');
+                    //- $('#coutinuebutton').prop('disabled', false);
                 } else {
                     $('#passwordlower').removeClass('valid-feedback').addClass('invalid-feedback');
+                    $('#coutinuebutton').prop('disabled', true);
                 }
                 
                 // is-validate capital letters
                 var upperCaseLetters = /[A-Z]/g;
                 if(val.match(upperCaseLetters)) {  
                     $('#passwordupper').removeClass('invalid-feedback').addClass('valid-feedback');
+                    //- $('#coutinuebutton').prop('disabled', false);
                 } else {
                     $('#passwordupper').removeClass('valid-feedback').addClass('invalid-feedback');
+                    $('#coutinuebutton').prop('disabled', true);
                 }
 
                 if(val.length >= 8 && val.match(numbers) && val.match(lowerCaseLetters) && val.match(upperCaseLetters)){
                     $('#originpassword').removeClass("is-invalid").addClass("is-valid");
+                    //- $('#coutinuebutton').prop('disabled', false);
                 } else {
                     $('#originpassword').removeClass("is-valid").addClass("is-invalid");
+                    $('#coutinuebutton').prop('disabled', true);
                 }
             }).focus(function() {
                 $('#passwordlength').removeClass('d-none').addClass('d-block');
@@ -177,6 +166,35 @@ block content
                 $('#passwordnumber').removeClass('d-block').addClass('d-none');
                 $('#passwordlower').removeClass('d-block').addClass('d-none');
                 $('#passwordupper').removeClass('d-block').addClass('d-none');
+            })
+
+
+            //confirm password
+            $('#validatepassword').keyup(function(){
+                var password = $("#originpassword").val();
+                var val = $('#validatepassword').val();
+                if(password != '' && val != ''){
+                    if( password == val){
+                        $("#validatepassword").removeClass("is-invalid").addClass("is-valid");
+                        $("#feedbackvalidate").removeClass("invalid-feedback").addClass("valid-feedback");
+                        $("#feedbackvalidate").html("");
+                        $('#coutinuebutton').prop('disabled', false);
+                    } else {
+                        $("#validatepassword").removeClass("is-valid").addClass("is-invalid");
+                        $("#feedbackvalidate").removeClass("valid-feedback").addClass("invalid-feedback");
+                        $("#feedbackvalidate").html("passowrd doesn't match!!");
+                        $('#coutinuebutton').prop('disabled', true);
+                    }
+                } else {
+                    $("#validatepassword").removeClass("is-valid").addClass("is-invalid");
+                    $("#feedbackvalidate").removeClass("valid-feedback").addClass("invalid-feedback");
+                    $("#feedbackvalidate").html("passowrd should not be empty");
+                    $('#coutinuebutton').prop('disabled', true);
+                }
+            }).focus(function() {
+                $('#feedbackvalidate').removeClass('d-none').addClass('d-block');
+            }).blur(function() {
+                //- $('#feedbackvalidate').removeClass('d-block').addClass('d-none');
             })
         })
         
