@@ -79,7 +79,9 @@ block content
                                 $("#emailvalidate").removeClass("is-invalid").addClass("is-valid");
                                 $("#feedbackemail").removeClass("invalid-feedback").addClass("valid-feedback");
                                 $("#feedbackemail").html("");
-                                //- $('#coutinuebutton').prop('disabled', false);
+                                if($('#validatepassword').hasClass("is-valid")){
+                                    $('#coutinuebutton').prop('disabled', false);
+                                }
                             } else if( data=='no'){
                                 $("#emailvalidate").removeClass("is-valid").addClass("is-invalid");
                                 $("#feedbackemail").removeClass("ivalid-feedback").addClass("invalid-feedback");
@@ -178,7 +180,10 @@ block content
                         $("#validatepassword").removeClass("is-invalid").addClass("is-valid");
                         $("#feedbackvalidate").removeClass("invalid-feedback").addClass("valid-feedback");
                         $("#feedbackvalidate").html("");
-                        $('#coutinuebutton').prop('disabled', false);
+                        if($('#emailvalidate').hasClass("is-valid")){
+                            $('#coutinuebutton').prop('disabled', false);
+                        }
+                        
                     } else {
                         $("#validatepassword").removeClass("is-valid").addClass("is-invalid");
                         $("#feedbackvalidate").removeClass("valid-feedback").addClass("invalid-feedback");
