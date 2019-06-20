@@ -18,14 +18,14 @@ block content
                             #feedbackemail
                     .form-group.row
                         .col-sm
-                            input#originpassword.form-control(type='password', name='password', placeholder='Password')
+                            input#originpassword.form-control.d-none(type='password', name='password', placeholder='Password')
                             #passwordlength.d-none.invalid-feedback At least 8 characters
                             #passwordnumber.d-none.invalid-feedback At least one number
                             #passwordlower.d-none.invalid-feedback At least one letter
                             #passwordupper.d-none.invalid-feedback At least one capital letter
                     .form-group.row
                         .col-sm
-                            input#validatepassword.form-control(type='password', name='', placeholder='Confirm Password')
+                            input#validatepassword.form-control.d-none(type='password', name='', placeholder='Confirm Password')
                             #feedbackvalidate
                 button#coutinuebutton.btn.btn-success.btn-lg.btn-block.mt-5.text-white(role='button', style="font-size: 15px", onclick="document.getElementById('user-create').submit();") Continue
             
@@ -80,11 +80,15 @@ block content
                                 $("#feedbackemail").removeClass("invalid-feedback").addClass("valid-feedback");
                                 $("#feedbackemail").html("");
                                 //- $('#coutinuebutton').prop('disabled', false);
+                                $('#originpassword').removeClass("d-none").addClass("d-block");
+                                $('#validatepassword').removeClass("d-none").addClass("d-block");
                             } else if( data=='no'){
                                 $("#emailvalidate").removeClass("is-valid").addClass("is-invalid");
                                 $("#feedbackemail").removeClass("ivalid-feedback").addClass("invalid-feedback");
                                 $("#feedbackemail").html("Email already exist! Please Sign In");
                                 $('#coutinuebutton').prop('disabled', true);
+                                $('#originpassword').removeClass("d-block").addClass("d-none");
+                                $('#validatepassword').removeClass("d-block").addClass("d-none");
                             }
                         })
                     } else {
@@ -92,6 +96,8 @@ block content
                         $("#feedbackemail").removeClass("ivalid-feedback").addClass("invalid-feedback");
                         $("#feedbackemail").html("invalid email format");
                         $('#coutinuebutton').prop('disabled', true);
+                        $('#originpassword').removeClass("d-block").addClass("d-none");
+                        $('#validatepassword').removeClass("d-block").addClass("d-none");
                     }
                 } else {
                     $('#nextbutton').prop('disabled', true);
