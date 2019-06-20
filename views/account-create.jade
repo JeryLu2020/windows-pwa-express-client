@@ -79,9 +79,12 @@ block content
                                 $("#emailvalidate").removeClass("is-invalid").addClass("is-valid");
                                 $("#feedbackemail").removeClass("invalid-feedback").addClass("valid-feedback");
                                 $("#feedbackemail").html("");
-                                //- $('#coutinuebutton').prop('disabled', false);
+                               
                                 $('#originpassword').removeClass("d-none").addClass("d-block");
                                 $('#validatepassword').removeClass("d-none").addClass("d-block");
+                                if($('#originpassword').hasClass("is-valid") && $('#validatepassword').hasClass("is-valid")){
+                                     $('#coutinuebutton').prop('disabled', false);
+                                }
                             } else if( data=='no'){
                                 $("#emailvalidate").removeClass("is-valid").addClass("is-invalid");
                                 $("#feedbackemail").removeClass("ivalid-feedback").addClass("invalid-feedback");

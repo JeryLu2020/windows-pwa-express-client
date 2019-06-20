@@ -98,25 +98,35 @@ router.get('/create', (req,res)=>{
 
 // check whether username is already taken
 router.post('/checkemail', (req, res)=> {
-     Hero.findOne({ email: req.body.email})
-        .then(data=>{
-            if(!data){
-                return res.send("ok");
-            }
-            return res.send("no");
-        })
-        .catch(err=>{
-            return res.render('error', { errmsg: err });
-        });
+    Hero.findOne({ email: req.body.email})
+    .then(data=>{
+        if(!data){
+            return res.send("ok");
+        }
+        return res.send("no");
+    })
+    .catch(err=>{
+        return res.render('error', { errmsg: err });
+    });
 })
 
 // user create detail page
 router.post('/create/details', (req,res)=>{
+    
     if(req.body.email && req.body.password){
         // req.session.username = req.body.username;
         req.session.email = req.body.email;
         req.session.password = req.body.password;
-        return res.render('account-create-details');
+        Hero.findOne({ email: req.body.email})
+        .then(data=>{
+            if(!data){
+                return res.render('account-create-details');
+            }
+            return res.render('error', { errmsg: "please Sign In" });
+        })
+        .catch(err=>{
+            return res.render('error', { errmsg: err });
+        });
     } else{
         return res.render('error', { errmsg: "please fill in email address and passowrd" });
     }
