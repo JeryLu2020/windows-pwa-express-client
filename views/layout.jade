@@ -28,8 +28,20 @@ body
           a#loginbuttom.btn.btn-outline-success(href='/account') Sign In
           form(action="/account/logout", method="GET")
             button#logoutbuttom.btn.btn-outline-secondary.d-none(type="submit") Sign Out
-    .container-fluid
+    .container-fluid.h-100
       block content
+
+    style.
+      .container-fluid {
+        min-height: 100%;
+        height: 100%;
+      }
+      body {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+      }
+      
 
     script.
       $(document).ready(function() {
