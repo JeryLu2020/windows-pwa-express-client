@@ -13,7 +13,7 @@ block content
                             input#emailvalidate.mt-3.form-control(type='text', placeholder='Email address', value='#{email}' name='email_address', onblur="checkEmail(this.value)")
                             #feedbackemail
                 p.mt-4.small To confirm this is your email address, please tap the button below to receive a verification code.
-                a.btn.btn-success.btn-lg.btn-block.mt-5.text-light(role='button', style="font-size: 15px", onclick="document.getElementById('verify-email').submit();") Send me a verification code
+                a.btn.btn-success.btn-lg.btn-block.mt-5(role='button', style="font-size: 15px", onclick="document.getElementById('verify-email').submit();") Send me a verification code
 
     style.
         .form-group input{

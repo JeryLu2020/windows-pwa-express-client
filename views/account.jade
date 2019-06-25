@@ -19,7 +19,7 @@ block content
                 a.float-right.mt-4.text-success(style="font-size: 12px")
                     | trouble sign in?
                 br
-                a#createaccount.btn.btn-success.btn-lg.btn-block.mt-5.d-none(href='/account/create', role='button', style="font-size: 15px") Create account
+                a#createaccount.btn.btn-success.btn-lg.btn-block.mt-5(href='/account/create', role='button', style="font-size: 15px") Create account
 
     style.
         .form-group input{
@@ -49,13 +49,13 @@ block content
                                 $("#feedbackemail").removeClass("invalid-feedback").addClass("valid-feedback");
                                 $("#feedbackemail").html("");
                                 $('#nextbutton').prop('disabled', false);
-                                $('#createaccount').removeClass('d-block').addClass('d-none');
+                                //- $('#createaccount').removeClass('d-block').addClass('d-none');
                             } else if( data=='ok'){
                                 $("#emailvalidate").removeClass("is-valid").addClass("is-invalid");
                                 $("#feedbackemail").removeClass("ivalid-feedback").addClass("invalid-feedback");
                                 $("#feedbackemail").html("Email not found! Please create account first");
                                 $('#nextbutton').prop('disabled', true);
-                                $('#createaccount').removeClass('d-none').addClass('d-block');
+                                //- $('#createaccount').removeClass('d-none').addClass('d-block');
                             }
                         })
                     } else {
@@ -63,11 +63,11 @@ block content
                         $("#feedbackemail").removeClass("ivalid-feedback").addClass("invalid-feedback");
                         $("#feedbackemail").html("invalid email format");
                         $('#nextbutton').prop('disabled', true);
-                        $('#createaccount').removeClass('d-block').addClass('d-none');
+                        //- $('#createaccount').removeClass('d-block').addClass('d-none');
                     }
                 } else {
                     $('#nextbutton').prop('disabled', true);
-                    $('#createaccount').removeClass('d-block').addClass('d-none');
+                    //- $('#createaccount').removeClass('d-block').addClass('d-none');
                 }
             }).focus(function() {
                 $('#feedbackemail').removeClass('d-none').addClass('d-block');
