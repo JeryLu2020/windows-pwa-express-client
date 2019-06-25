@@ -3,22 +3,23 @@ extends layout
 head
 
 block content
-    .jumbotron.text-center.bg-white.shadow.rounded.mt-5
-        .container-fluid
-            h5.mt-3 Sign In
-            form(action='/account/login', method="POST", id="account-login")
-                .form-group.row.mt-4
-                    .col-sm
-                        input#emailvalidate.mt-3.form-control(type='text', name="email", placeholder='Email address')
-                        #feedbackemail
-            button#nextbutton.btn.btn-success.btn-lg.btn-block.mt-4.text-white(role='button', style="font-size: 15px", onclick="document.getElementById('account-login').submit()") Next
-            .form-check.mt-4.float-left
-                input#exampleCheck1.form-check-input.align-center(type='checkbox',style="display: center;")
-                label.align-middle(for='exampleCheck1', style="font-size: 12px; margin-top: 0") stay signed in
-            a.float-right.mt-4.text-success(style="font-size: 12px")
-                | trouble sign in?
-            br
-            a#createaccount.btn.btn-success.btn-lg.btn-block.mt-5.d-none(href='/account/create', role='button', style="font-size: 15px") Create account
+    .container
+        .row.d-flex.justify-content-center
+            .jumbotron.text-center.bg-white.shadow.rounded.mt-5(style="width:400px")
+                h5.mt-3 Sign In
+                form(action='/account/login', method="POST", id="account-login")
+                    .form-group.row.mt-4
+                        .col-sm
+                            input#emailvalidate.mt-3.form-control(type='text', name="email", placeholder='Email address')
+                            #feedbackemail
+                button#nextbutton.btn.btn-success.btn-lg.btn-block.mt-4.text-white(role='button', style="font-size: 15px", onclick="document.getElementById('account-login').submit()") Next
+                .form-check.mt-4.float-left
+                    input#exampleCheck1.form-check-input.align-center(type='checkbox',style="display: center;")
+                    label.align-middle(for='exampleCheck1', style="font-size: 12px; margin-top: 0") stay signed in
+                a.float-right.mt-4.text-success(style="font-size: 12px")
+                    | trouble sign in?
+                br
+                a#createaccount.btn.btn-success.btn-lg.btn-block.mt-5.d-none(href='/account/create', role='button', style="font-size: 15px") Create account
 
     style.
         .form-group input{
@@ -33,10 +34,6 @@ block content
         }
         .form-group input:focus{
             border-bottom: 2px solid green;
-        }
-        .jumbotron {
-            min-width: 400px;
-            height: 70vh;
         }
       
     
