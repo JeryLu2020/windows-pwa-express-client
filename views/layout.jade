@@ -31,9 +31,9 @@ body
               | Home
           li.nav-item
             a.nav-link(href='#') Features
-        form.form-inline.my-1
-          .md-form.form-sm.my-0
-            a#myprofile.d-none(href='/account/profile') MyProfile 
+        ul.navbar-nav.ml-auto
+          li.nav-item
+            a#myprofile.d-none.nav-link.text-success(href='/account/profile') MyProfile 
           a#loginbuttom.btn.btn-outline-success.btn-sm.my-0(href='/account') Sign In
         form(action="/account/logout", method="GET", id="sign-out")
           button#logoutbuttom.btn.btn-outline-secondary.d-none(role='button', onclick="document.getElementById('sign-out').submit();") Sign Out

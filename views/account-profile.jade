@@ -50,12 +50,17 @@ block content
 
         h5 Login Activities
         each info in loginactivity.reverse()
-            .row.border-top
-                .col-1
-                    h6.badge.badge-pill.badge-success login
-                .col-3
-                    small #{info.loginDateTime}
-                .col-8
-                    small #{info.device_ip}
-                    br
-                    small #{info.device_os}
+            .table-responsive
+                table.table-sm
+                    thead
+                    tr
+                        th.th-lg Activity
+                        th.th-lg Date
+                        th.th-lg IP
+                        th.th-lg Device
+                    tbody
+                    tr
+                        td.text-success Login
+                        td #{info.loginDateTime}
+                        td #{info.device_ip}
+                        td #{info.device_os}
