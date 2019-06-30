@@ -27,6 +27,11 @@ router.get('/', function (req, res) {
     }
 });
 
+/* GET map page. */
+router.get('/map.html', function (req, res) {
+    res.sendFile('./public/map.html');
+});
+
 router.get('/offline.html', function (req, res) {
     res.sendFile('./public/offline.html');
 });
