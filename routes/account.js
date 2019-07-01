@@ -29,6 +29,43 @@ router.post('/login', (req, res)=>{
     }
 });
 
+
+// forget password
+router.post('/forgetpassword', (req, res)=>{
+
+    var eamilAddress = req.body.email_address;
+
+    const request = sg.emptyRequest({
+        method: "POST",
+        path: "/v3/mail/send",
+        body: {
+            personalizations: [{
+                to: [{
+                        email: eamilAddress
+                    }],
+                    subject:"Verify Your Email"
+                }],
+                from: {
+                    email: "mail@express.com"
+                },
+                content: [
+                {
+                    type: 'text/plain',
+                    value: `Hello, please click below address to reset your password ${eamilAddress}`
+                }]
+        }
+    });
+    sg.API(request, function (error, response) {
+        if (error) {
+            return res.send('error', { errmsg: "please try again" });
+        }
+        else {
+            return res.send("Please check your email address and reset the password");
+        }
+    });
+})
+
+
 // user login success page
 router.post('/login/success', (req, res) => {
     // get infomation
@@ -66,6 +103,8 @@ router.post('/login/success', (req, res) => {
             });
     }
 });
+
+
 // update user activity
 function updateactivity (mongoid, logindatetime, ip, os, number) {
     Hero.updateOne( { _id : mongoid }, { 

@@ -15,6 +15,16 @@ block content
                         .col-sm
                             input#emailvalidate.form-control(type='password', name='password', placeholder='Password')
                 a.btn.btn-success.btn-lg.btn-block.mt-5.text-white(role='button', style="font-size: 15px", onclick="document.getElementById('user-login-success').submit();") Sign In
+                .custom-control.custom-checkbox
+                    input#defaultUnchecked.custom-control-input(type='checkbox')
+                    label.custom-control-label(for='defaultUnchecked') forget your password?
+                form(action='/account/forgetpassword', method='POST', id='reset-password')
+                    #forgetform.form-row.align-items-center.d-none
+                        .col-auto
+                        .md-form.input-group.mb-3
+                            input#inlineFormInputGroupMD.form-control(type='text', name='email_address', placeholder='Email', value="#{email}")
+                            .col-auto
+                            button.btn.btn-primary.mb-0(onclick="document.getElementById('reset-password').submit();") Reset
             
     style.
         .form-group input{
@@ -42,3 +52,14 @@ block content
         .icon-flag {
             display: inline-block !important;
         }
+    
+    script.
+        $(document).ready(function(){
+            $('#defaultUnchecked').click(function(){
+                if($('#forgetform').hasClass('d-none')){
+                    $('#forgetform').removeClass('d-none').addClass('d-block');
+                } else if($('#forgetform').hasClass('d-block')){
+                    $('#forgetform').removeClass('d-block').addClass('d-none');
+                }
+            })
+        })
