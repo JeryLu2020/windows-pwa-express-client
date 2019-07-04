@@ -3,7 +3,6 @@ var router = express.Router();
 require('dotenv').config();
 var country = require('countryjs');
 // var unirest = require('unirest');
-const sendGrid = require('sendgrid').mail;
 const sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
 
 var countrystatecity= require('countrycitystatejson')
@@ -35,7 +34,7 @@ router.post('/forgetpassword', (req, res)=>{
 
     var eamilAddress = req.body.email_address;
     var resetlink = "http://windows-pwa-express-client.azurewebsites.net/account/resetpassword";
-    
+
     const request = sg.emptyRequest({
         method: "POST",
         path: "/v3/mail/send",
