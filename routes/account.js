@@ -34,7 +34,8 @@ router.post('/login', (req, res)=>{
 router.post('/forgetpassword', (req, res)=>{
 
     var eamilAddress = req.body.email_address;
-
+    var resetlink = "http://windows-pwa-express-client.azurewebsites.net/account/resetpassword";
+    
     const request = sg.emptyRequest({
         method: "POST",
         path: "/v3/mail/send",
@@ -51,18 +52,24 @@ router.post('/forgetpassword', (req, res)=>{
                 content: [
                 {
                     type: 'text/plain',
-                    value: `Hello, please click below address to reset your password ${eamilAddress}`
+                    value: `Hello, please click below address to reset your password ${resetlink}`
                 }]
         }
     });
     sg.API(request, function (error, response) {
         if (error) {
-            return res.send('error', { errmsg: "please try again" });
+            return res.send('no');
         }
         else {
-            return res.send("Please check your email address and reset the password");
+            return res.send('ok');
         }
     });
+})
+
+
+// forget password
+router.get('/resetpassword', (req, res)=>{
+    res.render('account-resetpassword');
 })
 
 
