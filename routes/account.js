@@ -30,9 +30,8 @@ router.post('/login', (req, res)=>{
 });
 
 
-// forget password
+// forget password, send email
 router.post('/forgetpassword', (req, res)=>{
-
     var eamilAddress = req.body.email_address;
 
     const request = sg.emptyRequest({
@@ -51,7 +50,7 @@ router.post('/forgetpassword', (req, res)=>{
                 content: [
                 {
                     type: 'text/plain',
-                    value: `Hello, please click below address to reset your password ${eamilAddress}`
+                    value: `Hello, please click below address to reset your password http://windows-pwa-express-client.azurewebsites.net/account/resetpassword/${eamilAddress}`
                 }]
         }
     });
@@ -63,6 +62,12 @@ router.post('/forgetpassword', (req, res)=>{
             return res.send("Please check your email address and reset the password");
         }
     });
+})
+
+// reset password page
+router.get('/resetpassword/:email', (req, res) => {
+    console.log(req.params.email);
+    res.render('account-resetpassword');
 })
 
 

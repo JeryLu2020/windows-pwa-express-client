@@ -34,9 +34,20 @@ block content
                     #forgetform.form-row.align-items-center.d-none
                         .col-auto
                         .md-form.input-group.mb-3
-                            input#inlineFormInputGroupMD.form-control(type='text', name='email_address', placeholder='Email', value="#{email}")
+                            input#inlineFormInputGroupMD.form-control(type='text', name='email_address', placeholder='Email', value="#{email}", style="font-size: 15px")
                             .col-auto
-                            button.btn.btn-primary.mb-0(onclick="document.getElementById('reset-password').submit();") Reset
+                            button.btn.btn-primary.mb-0(type='button', data-toggle='modal', data-target='#resetModal') Reset
+                            #resetModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='resetModalLabel', aria-hidden='true')
+                                .modal-dialog.modal-dialog-centered(role='document')
+                                    .modal-content
+                                        .modal-header
+                                            h5#resetModalLabel.modal-title Email sent successfully
+                                            button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                                span(aria-hidden='true') ×
+                                        .modal-body 
+                                            h6#resetModalbody Please check email #{email} and click the Authentication URL to reset your password.
+                                        //- .modal-footer
+                                            //- button.btn.btn-primary(type='button', data-dismiss='modal') OK
             
     style.
         .form-group input{
@@ -88,6 +99,10 @@ block content
                     $('#user-login-success').submit();
                 }
             })
+        })
+
+        $('#resetModal').click(function(){
+            window.location.href = '/';
         })
         
         })
