@@ -10,11 +10,23 @@ block content
                 form(action='/account/login/success', method='POST', id='user-login-success')
                     .form-group.row.mt-4
                         .col-sm
-                            input#validatename.form-control(type='text', name='email', placeholder='Email', value="#{email}")
+                            input#loginemail.form-control(type='text', name='email', placeholder='Email', value="#{email}")
                     .form-group.row
                         .col-sm
-                            input#emailvalidate.form-control(type='password', name='password', placeholder='Password')
-                a.btn.btn-success.btn-lg.btn-block.mt-5.text-white(role='button', style="font-size: 15px", onclick="document.getElementById('user-login-success').submit();") Sign In
+                            input#loginpassword.form-control(type='password', name='password', placeholder='Password')
+                button#singin.btn.btn-success.btn-lg.btn-block(type='button', data-toggle='modal', data-target='#basicExampleModal' style="font-size: 15px") Sign In
+                #basicExampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                    .modal-dialog.modal-dialog-centered(role='document')
+                        .modal-content
+                            .modal-header
+                                h5#exampleModalLabel.modal-title 
+                                button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                    span(aria-hidden='true') ×
+                            .modal-body 
+                                h5#exampleModalbody 
+                            .modal-footer
+                                //- button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+
                 .custom-control.custom-checkbox
                     input#defaultUnchecked.custom-control-input(type='checkbox')
                     label.custom-control-label(for='defaultUnchecked') forget your password?
@@ -62,4 +74,20 @@ block content
                     $('#forgetform').removeClass('d-block').addClass('d-none');
                 }
             })
+
+        $('#singin').click(function(){
+            $.post('/account/login/check', { email: $('#loginemail').val(), password: $('#loginpassword').val()}, function(data){
+                if(data=='no'){
+                    console.log('no');
+                    $('#exampleModalLabel').html('Wrong Password');
+                    $('#exampleModalbody').html('Please try again with a correct password');
+                } else if (data=='ok'){
+                    console.log('ok');
+                    $('#exampleModalLabel').html('Sign In Success');
+                    $('#exampleModalbody').html('Redirecting...');
+                    $('#user-login-success').submit();
+                }
+            })
+        })
+        
         })

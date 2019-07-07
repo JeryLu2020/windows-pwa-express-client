@@ -130,6 +130,33 @@ function updateactivity (mongoid, logindatetime, ip, os, number) {
         });
 }
 
+
+// check user login success page
+router.post('/login/check', (req, res) => {
+    
+    let loginemail = req.body.email;
+    let loginpassword = req.body.password;
+
+    if(loginemail=="admin@admin.com" && loginpassword=="Admin123"){
+        return res.render('error', { errmsg: "You are not allowed to login as admin" });
+    } else {
+        // find users id
+        Hero.findOne({ email: loginemail, password: loginpassword})
+            .then(data=>{
+                if(!data){
+                    return res.send('no');
+                }
+                return res.send('ok');
+            })
+            .catch(err=>{
+                return res.render('error', { errmsg: err });
+            });
+    }
+});
+
+
+
+
 // user create first page
 router.get('/create', (req,res)=>{
     res.render('account-create');
