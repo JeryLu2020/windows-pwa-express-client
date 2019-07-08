@@ -49,18 +49,18 @@ block content
                             input.form-control-plaintext(type='text', readonly='', value='#{userprofiler.city_name}')
 
         h5 Login Activities
-        each info in loginactivity.reverse()
             .table-responsive
-                table.table-sm
+                table
                     thead
-                    tr
-                        th.th-lg Activity
-                        th.th-lg Date
-                        th.th-lg IP
-                        th.th-lg Device
+                        tr
+                            th Activity
+                            th Date
+                            th IP
+                            th Device
                     tbody
-                    tr
-                        td.text-success Login
-                        td #{info.loginDateTime}
-                        td #{info.device_ip}
-                        td #{info.device_os}
+                        each info in loginactivity.reverse()
+                            tr
+                                td.text-success Login
+                                td #{info.loginDateTime}
+                                td #{info.device_ip}
+                                td #{info.device_os}
