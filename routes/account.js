@@ -29,9 +29,8 @@ router.post('/login', (req, res)=>{
 });
 
 
-// forget password
+// forget password, send email
 router.post('/forgetpassword', (req, res)=>{
-
     var eamilAddress = req.body.email_address;
     var resetlink = "http://windows-pwa-express-client.azurewebsites.net/account/resetpassword";
 
@@ -51,7 +50,7 @@ router.post('/forgetpassword', (req, res)=>{
                 content: [
                 {
                     type: 'text/plain',
-                    value: `Hello, please click below address to reset your password ${resetlink}`
+                    value: `Hello, please click below address to reset your password http://windows-pwa-express-client.azurewebsites.net/account/resetpassword/${eamilAddress}`
                 }]
         }
     });
@@ -63,6 +62,12 @@ router.post('/forgetpassword', (req, res)=>{
             return res.send('ok');
         }
     });
+})
+
+// reset password page
+router.get('/resetpassword/:email', (req, res) => {
+    console.log(req.params.email);
+    res.render('account-resetpassword');
 })
 
 
@@ -135,6 +140,33 @@ function updateactivity (mongoid, logindatetime, ip, os, number) {
             console.log('updateactivity failure' + err);
         });
 }
+
+
+// check user login success page
+router.post('/login/check', (req, res) => {
+    
+    let loginemail = req.body.email;
+    let loginpassword = req.body.password;
+
+    if(loginemail=="admin@admin.com" && loginpassword=="Admin123"){
+        return res.render('error', { errmsg: "You are not allowed to login as admin" });
+    } else {
+        // find users id
+        Hero.findOne({ email: loginemail, password: loginpassword})
+            .then(data=>{
+                if(!data){
+                    return res.send('no');
+                }
+                return res.send('ok');
+            })
+            .catch(err=>{
+                return res.render('error', { errmsg: err });
+            });
+    }
+});
+
+
+
 
 // user create first page
 router.get('/create', (req,res)=>{

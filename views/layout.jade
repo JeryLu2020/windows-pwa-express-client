@@ -6,7 +6,7 @@ head
 
   link(href='https://use.fontawesome.com/releases/v5.8.2/css/all.css', rel='stylesheet')
   link(href='/mdbootstrap/css/bootstrap.min.css', rel='stylesheet')
-  link(rel='stylesheet', href='/country-picker/build/css/countrySelect.css')
+  link(href='/country-picker/build/css/countrySelect.css', rel='stylesheet')
 
   link(href='/mdbootstrap/css/mdb.min.css', rel='stylesheet')
   link(href='/mdbootstrap/css/style.css', rel='stylesheet')
@@ -21,7 +21,7 @@ head
 body
     nav.navbar.navbar-expand-lg.navbar-light.lighten-5
       a.navbar-brand
-        img(src='https://mdbootstrap.com/img/logo/mdb-transparent.png', height='30', alt='mdb logo')
+        img(src='/mdbootstrap/img/superman.png', height='30', alt='mdb logo')
       button.navbar-toggler(type='button', data-toggle='collapse', data-target='#basicExampleNav', aria-controls='basicExampleNav', aria-expanded='false', aria-label='Toggle navigation')
         span.navbar-toggler-icon
       #basicExampleNav.collapse.navbar-collapse
@@ -30,7 +30,7 @@ body
             a.nav-link(href='/')
               | Home
           li.nav-item
-            a.nav-link(href='/map.html') Features
+            a.nav-link(href='/map') Map
         ul.navbar-nav.ml-auto
           li.nav-item
             a#myprofile.d-none.nav-link.text-success(href='/account/profile') MyProfile 
