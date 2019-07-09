@@ -14,7 +14,7 @@ block content
                     .form-group.row
                         .col-sm
                             input#loginpassword.form-control(type='password', name='password', placeholder='Password')
-                button#singin.btn.btn-success.btn-lg.btn-block(type='button', data-toggle='modal', data-target='#basicExampleModal' style="font-size: 15px") Sign In
+                button#singin.btn.btn-success.btn-lg.btn-block(role='button', data-toggle='modal', data-target='#basicExampleModal' style="font-size: 15px") Sign In
                 #basicExampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
                     .modal-dialog.modal-dialog-centered(role='document')
                         .modal-content
@@ -36,7 +36,7 @@ block content
                         .md-form.input-group.mb-3
                             input#inlineFormInputGroupMD.form-control(type='text', name='email_address', placeholder='Email', value="#{email}", style="font-size: 15px")
                             .col-auto
-                            button.btn.btn-primary.mb-0(type='button', data-toggle='modal', data-target='#resetModal') Reset
+                            button#resetpassword.btn.btn-primary.mb-0(type='button', data-toggle='modal', data-target='#resetModal') Reset
                             #resetModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='resetModalLabel', aria-hidden='true')
                                 .modal-dialog.modal-dialog-centered(role='document')
                                     .modal-content
@@ -45,7 +45,7 @@ block content
                                             button.close(type='button', data-dismiss='modal', aria-label='Close')
                                                 span(aria-hidden='true') ×
                                         .modal-body 
-                                            h6#resetModalbody Please check email #{email} and click the Authentication URL to reset your password.
+                                            h6#resetModalbody Please check email #{email} to reset password.
                                         //- .modal-footer
                                             //- button.btn.btn-primary(type='button', data-dismiss='modal') OK
     
@@ -79,30 +79,49 @@ block content
     script.
         $(document).ready(function(){
             $('#defaultUnchecked').click(function(){
-                if($('#forgetform').hasClass('d-none')){
-                    $('#forgetform').removeClass('d-none').addClass('d-block');
-                } else if($('#forgetform').hasClass('d-block')){
+                if($('#forgetform').hasClass('d-block')){
+                    $('#defaultUnchecked').prop('checked', false)
                     $('#forgetform').removeClass('d-block').addClass('d-none');
+                } else if($('#forgetform').hasClass('d-none')){
+                    $('#defaultUnchecked').prop('checked', true)
+                    $('#forgetform').removeClass('d-none').addClass('d-block');
                 }
             })
 
-        $('#singin').click(function(){
-            $.post('/account/login/check', { email: $('#loginemail').val(), password: $('#loginpassword').val()}, function(data){
-                if(data=='no'){
-                    console.log('no');
-                    $('#exampleModalLabel').html('Wrong Password');
-                    $('#exampleModalbody').html('Please try again with a correct password');
-                } else if (data=='ok'){
-                    console.log('ok');
-                    $('#exampleModalLabel').html('Sign In Success');
-                    $('#exampleModalbody').html('Redirecting...');
-                    $('#user-login-success').submit();
-                }
+            var num = 0;
+            $('#singin').click(function(){
+                $.post('/account/login/check', { email: $('#loginemail').val(), password: $('#loginpassword').val()}, function(data){
+                    if(data=='no'){
+                        console.log('no');
+                        num ++;
+                        $('#exampleModalLabel').html(num + ' Wrong Password');
+                        $('#exampleModalbody').html('Please try again with a correct password');
+                        console.log(num);
+                        if(num == 3){
+                            $('#singin').prop('disabled', true);
+                            $('#exampleModalbody').html('Too many retries, please reset your password');
+                            $('#defaultUnchecked').prop('checked', true);
+                            $('#forgetform').removeClass('d-none').addClass('d-block');
+                        }
+                    } else if (data=='ok'){
+                        console.log('ok');
+                        $('#exampleModalLabel').html('Sign In Success');
+                        $('#exampleModalbody').html('Redirecting...');
+                        $('#user-login-success').submit();
+                    }
+                })
             })
-        })
 
-        $('#resetModal').click(function(){
-            window.location.href = '/';
-        })
+            $('#resetModal').click(function(){
+                window.location.href = '/';
+            })
+
+            $('#resetpassword').click(function(){
+                setTimeout(
+                    function() 
+                    {
+                        $('#reset-password').submit();
+                    }, 3000);
+            })
         
         })

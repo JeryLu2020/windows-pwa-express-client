@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 require('dotenv').config();
 var country = require('countryjs');
-// var unirest = require('unirest');
 const sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
 
 var countrystatecity= require('countrycitystatejson')
@@ -31,6 +30,9 @@ router.post('/login', (req, res)=>{
 
 // forget password, send email
 router.post('/forgetpassword', (req, res)=>{
+    console.log(process.env.ENV)
+    var host = (process.env.ENV == "production") ? "http://windows-pwa-express-client.azurewebsites.net" : "http://localhost:5000";
+    console.log(host);
     var eamilAddress = req.body.email_address;
     var resetlink = "http://windows-pwa-express-client.azurewebsites.net/account/resetpassword";
 
@@ -50,7 +52,7 @@ router.post('/forgetpassword', (req, res)=>{
                 content: [
                 {
                     type: 'text/plain',
-                    value: `Hello, please click below address to reset your password http://windows-pwa-express-client.azurewebsites.net/account/resetpassword/${eamilAddress}`
+                    value: `Hello, please click below address to reset your password ${host}/account/resetpassword/${eamilAddress}`
                 }]
         }
     });
@@ -59,7 +61,7 @@ router.post('/forgetpassword', (req, res)=>{
             return res.send('no');
         }
         else {
-            return res.send('ok');
+            return res.redirect('/');
         }
     });
 })
@@ -67,7 +69,22 @@ router.post('/forgetpassword', (req, res)=>{
 // reset password page
 router.get('/resetpassword/:email', (req, res) => {
     console.log(req.params.email);
-    res.render('account-resetpassword');
+    return res.render('account-resetpassword', {email: req.params.email});
+})
+
+router.post('/resetpassword', (req, res) => {
+    console.log(req.body.email);
+    console.log(req.body.password);
+    Hero.findOneAndUpdate({email: req.body.email}, {password: req.body.password})
+        .then(data=>{
+            if(!data){
+                return res.render('error', { errmsg: 'no record' });
+            }
+            return res.redirect('/');
+        })
+        .catch(err=>{
+            return res.render('error', { errmsg: err });
+        })
 })
 
 
