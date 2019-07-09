@@ -3,6 +3,7 @@ var router = express.Router();
 require('dotenv').config();
 var country = require('countryjs');
 const sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
+const jwt = require('jsonwebtoken');
 
 var countrystatecity= require('countrycitystatejson')
 
@@ -34,7 +35,10 @@ router.post('/forgetpassword', (req, res)=>{
     var host = (process.env.ENV == "production") ? "http://windows-pwa-express-client.azurewebsites.net" : "http://localhost:5000";
     console.log(host);
     var eamilAddress = req.body.email_address;
-    var resetlink = "http://windows-pwa-express-client.azurewebsites.net/account/resetpassword";
+    
+    const options = { expiresIn: '5m' };
+    const token = jwt.sign({ email: eamilAddress}, process.env.JWT_SECRET, options);
+    console.log(token);
 
     const request = sg.emptyRequest({
         method: "POST",
@@ -52,7 +56,7 @@ router.post('/forgetpassword', (req, res)=>{
                 content: [
                 {
                     type: 'text/plain',
-                    value: `Hello, please click below address to reset your password ${host}/account/resetpassword/${eamilAddress}`
+                    value: `Hello, please click below address to reset your password, the URL will be expired within 5 minutes. ${host}/account/resetpassword/${token}`
                 }]
         }
     });
@@ -66,10 +70,18 @@ router.post('/forgetpassword', (req, res)=>{
     });
 })
 
-// reset password page
-router.get('/resetpassword/:email', (req, res) => {
-    console.log(req.params.email);
-    return res.render('account-resetpassword', {email: req.params.email});
+// user click the URL sent to email
+router.get('/resetpassword/:token', (req, res) => {
+    var emailtoken = req.params.token;
+
+    result = jwt.verify(emailtoken, process.env.JWT_SECRET, (err, decoded)=>{
+        if(err){
+            return res.render('error', { errmsg: 'token expired' });
+        } else {
+            console.log(decoded);
+            return res.render('account-resetpassword', {email: req.params.email});
+        }
+    })
 })
 
 router.post('/resetpassword', (req, res) => {
@@ -85,12 +97,6 @@ router.post('/resetpassword', (req, res) => {
         .catch(err=>{
             return res.render('error', { errmsg: err });
         })
-})
-
-
-// forget password
-router.get('/resetpassword', (req, res)=>{
-    res.render('account-resetpassword');
 })
 
 
