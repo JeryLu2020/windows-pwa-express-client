@@ -78,8 +78,8 @@ router.get('/resetpassword/:token', (req, res) => {
         if(err){
             return res.render('error', { errmsg: 'token expired' });
         } else {
-            console.log(decoded);
-            return res.render('account-resetpassword', {email: req.params.email});
+            console.log(decoded.email);
+            return res.render('account-resetpassword', {email: decoded.email});
         }
     })
 })
